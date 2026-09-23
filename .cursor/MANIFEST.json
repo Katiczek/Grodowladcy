@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "course": "10xdevs4",
+  "sourceId": "r-dd5c2b4bc3f63fee918d09330c676f31479453b6f6754ca1c13902646d33baca",
+  "module": 1,
+  "lang": "pl",
+  "tool": "generic",
+  "semantics": "delta",
+  "artifacts": [
+    {
+      "path": "prompts/m1l5-1-plan-integration.md",
+      "contentHash": "0710e988e16dcfa4c5ade7380da1f70641ea9b9e959008b94059ce52660d6118",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "prompts/m1l5-2-constrain-approach.md",
+      "contentHash": "2708716aecac24ad3c5f6793ba2c2385f4d7e53f33f5d735c5de07be43b1081e",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "prompts/m1l5-3-extend-prerequisites.md",
+      "contentHash": "90eaf318eade9962d118b67707cc8426c70567a9951105c4a1964623858ab8a7",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "prompts/m1l5-4-store-plan.md",
+      "contentHash": "1f5db15fadaa9a5c3acd9a47f3a97db060f5093005ad696e182be7d4bedd8d7d",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "prompts/skill-explainer.md",
+      "contentHash": "b304a2ba56c72752f6813871a0f039d1ad43afc84c714fc1fe839b05fd98be6e",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "rules/CLAUDE-m1l1.md",
+      "contentHash": "cf06289ee4667c4b50b16e8e84ff2ffb79aeab67cc51adc3cdb106e4f72a7515",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "rules/CLAUDE-m1l2.md",
+      "contentHash": "ae262f3c5ad2c50d4fe60ccf166c8151aefbb8a6e22b8cd5d69fc60567dcbd9e",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "rules/CLAUDE-m1l3.md",
+      "contentHash": "e49790a70d3d1842c957082e8b8fefefc604eca334c6e7aa63c15ef03190dc71",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "rules/CLAUDE-m1l4.md",
+      "contentHash": "a033ecfdffb1797d741547604b0c852c012734d51b850492cc432753fbed2b98",
+      "originLesson": "m1l4"
+    },
+    {
+      "path": "rules/CLAUDE-m1l5.md",
+      "contentHash": "43a050cb4c17d9f0cc468c85a58789a1eadcc7f61c7ede494f77d2c8c657ca59",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "skills/10x-agents-md/SKILL.md",
+      "contentHash": "1074ca498a1bcb362c00baa94a61c6aae7ac63b05cf45e40912fd6b462ba283f",
+      "originLesson": "m1l4"
+    },
+    {
+      "path": "skills/10x-bootstrapper/SKILL.md",
+      "contentHash": "0d697039505621ae097da01f243ad36c6bc786c7071471cfd1be27fd0aaa9abc",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/bootstrapper-config.yaml",
+      "contentHash": "49c89560aed35e2eb694592f0cb90ab41f425d1effc4b94682bd601b024842c1",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/handoff-consumer.md",
+      "contentHash": "3029b1ffdff09f85b840cfcc97a5ed50cabb6a6b8b0e6465032792227184917b",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/post-scaffold-verification.md",
+      "contentHash": "9b2915667ff937c8630d9d58e45e6643169078e428cc7c2b7cb721d7ab9ec666",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/pre-scaffold-verification.md",
+      "contentHash": "8154ab886d22d21cdd23c1cc26069644932b6155cc1bee614ec6991306695708",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/refusal-protocol.md",
+      "contentHash": "a4a5cb111659ab24dc88d9587d158f37896bbac618ec645c622ce680a685a8f1",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/scaffold-merge.md",
+      "contentHash": "33454bd846edf024d62bae30c8604ca26caafb391b08eaf4163d61e566d9f252",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-bootstrapper/references/verification-log-schema.md",
+      "contentHash": "eaa89efa5fc4eaf3aa242f0b172757778dea44a42e3ac53e44057a828b40a458",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-health-check/SKILL.md",
+      "contentHash": "545baf562c8967a9965d8b1e19a136d5d7f7d7fb3292eb880576f1adcb13deda",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-health-check/references/health-check-schema.md",
+      "contentHash": "6c7115da83ef2a4a396a9b703d94395a0904748bb586a6e182f2018fcbfedfe6",
+      "originLesson": "m1l3"
+    },
+    {
+      "path": "skills/10x-idea-check/SKILL.md",
+      "contentHash": "171de5252baa862debc3b98ed4045b3bda086211007fbee77190b03ced169dcb",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-idea-check/references/10xdevs-4-certification.md",
+      "contentHash": "f74dcaa30cb8a82a74be37e1cb076c04c8663e990d0b6c2b9d650a70e33eb152",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-idea-check/references/10xdevs-4-dates.md",
+      "contentHash": "d4eb24be474a149c161cb2e26349ef54220ef5447619bea91ce70116bb3786b4",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-idea-check/references/assessment-guide.md",
+      "contentHash": "2b4f11435261fb65c40f066d109bac818590171de22d908c5e72374f7eb0351a",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-idea-check/references/examples.md",
+      "contentHash": "9646e36fe9106a897534a2ee0323495b40192789ce2198329e52893d13c44450",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-infra-research/SKILL.md",
+      "contentHash": "81fb2eb175c084807b63830191fe574a2b93dd182268b325c787b4f8d6a21e45",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "skills/10x-infra-research/references/agent-friendly-criteria.md",
+      "contentHash": "888b4b712107bf8d8600061e1d907bb1bc14081cb2c3a74be8c7da641a35ab72",
+      "originLesson": "m1l5"
+    },
+    {
+      "path": "skills/10x-init/SKILL.md",
+      "contentHash": "b053958ce100eafcd6174d30c60a4cbddcc7c8547e8286172b8a2b8a0a3c63eb",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-lesson/SKILL.md",
+      "contentHash": "18eadf0f3578b060e5318192a426b996bb01660e6f53bc5c239e579d5fede14e",
+      "originLesson": "m1l4"
+    },
+    {
+      "path": "skills/10x-prd/SKILL.md",
+      "contentHash": "869a9bd9624d4e444da6bf3cd0ebb835a59577d5d990578719086e3f3f6222ee",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-rule-review/SKILL.md",
+      "contentHash": "32cb357b8f78bc08baa6d15a552db763c7465b6dc9cda9ba4e63c3828c6f34d7",
+      "originLesson": "m1l4"
+    },
+    {
+      "path": "skills/10x-shape/SKILL.md",
+      "contentHash": "1e78298a61d06474270361806c304082fa83bb4976fb9241bd50b4db00e30e11",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-shape/references/prd-schema.md",
+      "contentHash": "69e487a419e06fedd9d7761a6be1f375b5290839bdc58eaca1c1f64fe5f3516e",
+      "originLesson": "m1l1"
+    },
+    {
+      "path": "skills/10x-stack-assess/SKILL.md",
+      "contentHash": "761577b9d09987db8dafba504d2de4936d2ac9ce8dce081858ca6b60cec8bef8",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-stack-assess/references/agent-friendly-criteria.md",
+      "contentHash": "04e0cd99f1e64dd6dffe37a68844ddd8efb593057584afbe0fed308724eb0cad",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-stack-assess/references/decision-flow.md",
+      "contentHash": "8f88998ae05601eb52d8d7038af4310a7b558d8c14ac091668e148b06de4fffd",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-stack-assess/references/eval-cases.md",
+      "contentHash": "1bd474bd52bfb7a7efd5fa9a4f50f31f1a123f6acd6d0b5f2e9fd310b32fb920",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-stack-assess/references/handoff-schema.md",
+      "contentHash": "157c5b8546b32c115b4e4ad05e29546bc6adda2a3739e30148bf391c9de167b2",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-stack-assess/references/residual-interview.md",
+      "contentHash": "6b2b3f2b5975745e7c68e26748e7c2aaf4300de00e415f7c712fb8fac0272d95",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-stack-assess/references/starter-registry.yaml",
+      "contentHash": "620a9b26b308f697b56cc0ef9a589c545c0d3054dd8fff49fd02b4f5dbd49b17",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/SKILL.md",
+      "contentHash": "042031409a67f9d547f68ebd2d9cdd22228323ea54a6a1212830e920bc2db0e6",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/references/agent-friendly-criteria.md",
+      "contentHash": "04e0cd99f1e64dd6dffe37a68844ddd8efb593057584afbe0fed308724eb0cad",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/references/decision-flow.md",
+      "contentHash": "8f88998ae05601eb52d8d7038af4310a7b558d8c14ac091668e148b06de4fffd",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/references/eval-cases.md",
+      "contentHash": "1bd474bd52bfb7a7efd5fa9a4f50f31f1a123f6acd6d0b5f2e9fd310b32fb920",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/references/handoff-schema.md",
+      "contentHash": "157c5b8546b32c115b4e4ad05e29546bc6adda2a3739e30148bf391c9de167b2",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/references/residual-interview.md",
+      "contentHash": "6b2b3f2b5975745e7c68e26748e7c2aaf4300de00e415f7c712fb8fac0272d95",
+      "originLesson": "m1l2"
+    },
+    {
+      "path": "skills/10x-tech-stack-selector/references/starter-registry.yaml",
+      "contentHash": "620a9b26b308f697b56cc0ef9a589c545c0d3054dd8fff49fd02b4f5dbd49b17",
+      "originLesson": "m1l2"
+    }
+  ]
+}
