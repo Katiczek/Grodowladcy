@@ -33,11 +33,11 @@ Primary persona: Magda i stała paczka przyjaciół — jednocześnie współtw�
 
 Gracz jednoosobowy może ukończyć pełną sesję:
 
-1. Menu główne → „Nowa gra” lub „Wczytaj autosave” (jeden lokalny profil). Autosave zapisywany do pliku na początku fazy pierwszej.
-2. Faza Wierni poddani: mapa hex; wydawanie puli poddanych na sąsiednie pola — zajmij puste / zbuduj farmę (koszt monet, generuje monety w kolejnych turach) / zbuduj dom (koszt monet, zwiększa pulę poddanych); „Zakończ fazę”.
-3. Faza Najmij bohatera: lista bohaterów ze statystykami; wystawienie ogłoszenia — gracz wybiera pole i nagrodę X monet; typ zadania wynika automatycznie z typu pola (potwór → zabij, wieś → przejmij, własne → broń). Ukryty krok przydziału: oferta monet vs ukryty próg monet bohatera → przyjęte lub zignorowane.
-4. Faza Rozwiązanie: realizacja zaplanowanych akcji (zajęcia, budynki, misje). Dla przyjętych zleceń gra rozstrzyga sukces/porażkę na podstawie siły bohatera vs siły wroga.
-5. Powrót do fazy poddanych; powtarzanie tur aż osiągnięcie ustalonego progu sławy.
+1. Menu główne → „Nowa gra” lub „Wczytaj autosave” (jeden lokalny profil). Autosave zapisywany do pliku na początku fazy pierwszej. Start: **10 monet, 0 sławy, 3 wiernych poddanych**.
+2. Faza Wierni poddani: mapa hex; wydawanie puli poddanych na sąsiednie pola — zajmij puste / zbuduj farmę (**koszt 3, +2 monety/turę**) / zbuduj dom (**koszt 4, +1 do puli poddanych**); „Zakończ fazę”.
+3. Faza Najmij bohatera: **3 bohaterów w puli, nowa pula co turę**; lista ze statystykami; wystawienie ogłoszenia — gracz wybiera pole i nagrodę X monet; typ zadania wynika automatycznie z typu pola (potwór → zabij, wieś → przejmij, własne → broń). Ukryty krok przydziału: oferta monet vs ukryty próg monet bohatera → przyjęte lub zignorowane.
+4. Faza Rozwiązanie: realizacja zaplanowanych akcji (zajęcia, budynki, misje). Dla przyjętych zleceń gra rozstrzyga sukces/porażkę na podstawie siły bohatera vs siły wroga (**potwór 5 · wieś 3 · obrona własnego pola 2**). Sukces: potwór **+3 sławy** · wieś **+5 monet** (jednorazowo) · obrona **+1 sława**. Porażka: „Bohater poległ w zadaniu”.
+5. Powrót do fazy poddanych; powtarzanie tur aż **sława ≥ 20**.
 
 Timeline: ~3 tygodnie pracy po godzinach (`mvp_weeks: 3`).
 
@@ -59,7 +59,7 @@ W kolejności preferencji (po Primary):
 
 ### US-01: First solo turn through resolution and win check
 
-- **Given** the player starts a new game on a predefined hex map, with a capital, starting coins, fame, and loyal subjects; the map has empty fields, a neutral village, and a monster
+- **Given** the player starts a new game on a predefined hex map, with a capital, **10 coins, 0 fame, and 3 loyal subjects**; the map has empty fields, a neutral village, and a monster
 - **When** the first turn begins in phase 1 (loyal subjects)
 - **Then** the player sees the map and can select fields adjacent to their kingdom to plan one available action: claim empty hex, build farm, or build house
 
@@ -73,18 +73,19 @@ W kolejności preferencji (po Primary):
 - **Then** the game enters a hidden hero-assignment step: offered coins vs the hero's hidden coin threshold decide accept vs ignore; the player sees "Twoje zlecenie zostało… zignorowane" or "przyjęte"
 
 - **When** hero assignment finishes
-- **Then** phase 3 (resolution) runs: map view is active; phase-1 plans execute; for accepted jobs, before showing the outcome, the game resolves success using hero strength vs enemy strength; on success the player sees "Udało się, zyskałeś X, Y"; on failure "Bohater poległ w zadaniu"
+- **Then** phase 3 (resolution) runs: map view is active; phase-1 plans execute; for accepted jobs, before showing the outcome, the game resolves success using hero strength vs enemy strength (monster 5 / village 3 / own-field defense 2); on success: monster +3 fame, village +5 coins once, defense +1 fame; on failure "Bohater poległ w zadaniu"
 
 - **When** resolution finishes
-- **Then** win conditions are checked — if the player reached the set fame threshold they win; otherwise the game returns to phase 1 (autosave occurs at the start of phase 1)
+- **Then** win conditions are checked — if fame ≥ 20 the player wins; otherwise the game returns to phase 1 (autosave occurs at the start of phase 1)
 
 #### Acceptance Criteria
 
-- Subject-phase actions: claim empty / farm / house only (no "build village"); adjacent to kingdom only
+- Subject-phase actions: claim empty / farm (cost 3, +2 coins/turn) / house (cost 4, +1 subject pool); adjacent to kingdom only
 - Task type is automatic from field type; player does not pick task separately
+- Hero pool: 3 heroes per turn, refreshed each turn
 - Hero acceptance uses offered coins vs hidden coin threshold only (MVP)
-- Mission outcome uses hero strength vs enemy strength; messages: success gains / hero fell
-- Fame threshold ends the game; otherwise the turn loop continues
+- Mission outcome uses hero strength vs enemy strength (5 / 3 / 2); rewards: +3 fame / +5 coins / +1 fame
+- Fame ≥ 20 ends the game; otherwise the turn loop continues
 - Menu supports new game and load autosave; autosave at start of phase 1
 
 ## Functional Requirements
@@ -147,11 +148,13 @@ Gra porównuje monetową nagrodę zlecenia z ukrytym progiem monet oczekiwanym p
 
 Po przyjęciu zlecenia gra wylicza szanse na sukces misji na podstawie siły bohatera i siły wroga, którego ma pokonać.
 
-Wejścia (MVP): przy przyjęciu — liczba monet nagrody oraz ukryty próg monet bohatera (tylko tyle; rozbudowa czynników to nice-to-have). Przy wykonaniu — siła bohatera i siła wroga.
+Wejścia (MVP): przy przyjęciu — liczba monet nagrody oraz ukryty próg monet bohatera (tylko tyle; rozbudowa czynników to nice-to-have). Przy wykonaniu — siła bohatera i siła wroga (potwór 5, wieś 3, obrona własnego pola 2).
 
-Wynik dla gracza: komunikat „przyjęte” / „zignorowane”; dla przyjętych zadań — „Udało się, zyskałeś X, Y” albo „Bohater poległ w zadaniu”.
+Wynik dla gracza: komunikat „przyjęte” / „zignorowane”; dla przyjętych zadań — sukces: potwór +3 sławy, wieś +5 monet (jednorazowo), obrona +1 sława; albo „Bohater poległ w zadaniu”.
 
 Moment w turze: decyzja o przyjęciu zaraz po „Zakończ fazę” w fazie najmu; decyzja o sukcesie misji w fazie trzeciej, zanim wynik zostanie pokazany graczowi.
+
+Balans startowy i ekonomia (MVP): start 10 monet / 0 sławy / 3 poddanych; farma koszt 3 (+2 monety/turę); dom koszt 4 (+1 poddany); 3 bohaterów w puli, odświeżanie co turę; wygrana przy sławie ≥ 20.
 
 ## Access Control
 
@@ -170,9 +173,11 @@ Dla MVP Primary wystarczy lokalny profil + start gry jednoosobowej. Host z opcjo
 
 ## Open Questions
 
-1. **Jaka jest dokładna wartość progu sławy kończącego grę?** — TBD by user. Block: no (Primary mówi „ustalony próg”, bez liczby).
-2. **Jakie są wartości startowe: monety, sława, pula wiernych poddanych?** — TBD by user. Block: no.
-3. **Ile kosztują farma i dom oraz ile monet generuje farma na turę?** — TBD by user. Block: no.
-4. **Jak zdefiniowana jest „siła wroga” dla potwora, wsi i obrony własnego pola?** — TBD by user. Block: no.
-5. **Co konkretnie oznaczają X i Y w komunikacie sukcesu misji („zyskałeś X, Y”)?** — TBD by user. Block: no.
-6. **Ile bohaterów jest dostępnych w puli w turze MVP i czy pula się odświeża?** — TBD by user. Block: no.
+None open as of 2026-09-23. Resolved (all Recommended / 5→A1):
+
+1. Fame win threshold: **20**
+2. Start: **10 coins / 0 fame / 3 subjects**
+3. Farm: cost **3**, **+2 coins/turn**; House: cost **4**, **+1 subject pool**
+4. Enemy strength: monster **5**, village **3**, own-field defense **2**
+5. Mission success rewards: monster **+3 fame**, village **+5 coins** (once), defense **+1 fame**
+6. Hero pool: **3 per turn**, refreshed each turn

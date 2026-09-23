@@ -215,4 +215,10 @@ Moment w turze: decyzja o przyjęciu zaraz po „Zakończ fazę” w fazie najmu
 
 ## Forward: tech-stack
 
-Użytkownik wskazał zainteresowanie Unity lub Godot oraz łącznością lokalną (w tym ewentualnie Bluetooth gdy brak Wi‑Fi) — decyzja stacka i transportu sieciowego poza tą sesją. FR-009 mówi „local network”, nie pinuje BT.
+**Locked 2026-09-23:** Unity (manual). Outside course starter registry — no `starter_id`, do not run `/10x-bootstrapper` for this stack.
+
+Rationale: learning goal is Unity; registry mobile defaults are Expo/Flutter only. Project will be created via Unity Hub (Android target). PRD at `context/foundation/prd.md` remains the product contract.
+
+Local connectivity (optional later / Secondary): not pinned; decide in Unity networking layer when multiplayer is in scope.
+
+Użytkownik wskazał wcześniej też Godot jako alternatywę — odrzucone na rzecz Unity.
