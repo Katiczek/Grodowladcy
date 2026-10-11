@@ -22,7 +22,7 @@ milestone_status: open
 
 **M-1: Pierwsza grywalna tura** — Status: open
 
-- **Intent:** Gracz jednoosobowy kończy jedną turę na ustalonej mapie — od poddanych, przez ogłoszenie, do przyjęcia albo odmowy i wyniku misji — a potem może wrócić do zapisanej sesji i grać dalej aż do wygranej sławą. Kamień milowy dowozi sesję z głównych kryteriów sukcesu; drugi gracz zostaje poza nim.
+- **Intent:** Gracz jednoosobowy zaczyna z menu głównego („New game” albo „Continue”), kończy jedną turę na ustalonej mapie — od poddanych, przez ogłoszenie, do przyjęcia albo odmowy i wyniku misji — a potem może wrócić do zapisanej sesji i grać dalej aż do wygranej sławą. Kamień milowy dowozi sesję z głównych kryteriów sukcesu; drugi gracz zostaje poza nim.
 - **Source materials:** `context/foundation/prd.md` (v1)
 - **Done when:** gotowe, gdy każdy S-NN poniżej ma status `done`.
 - **Scope anchors:** FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-014, US-01
@@ -35,18 +35,19 @@ Krótka, lokalna gra na telefony dla Magdy i stałej paczki przyjaciół: wspól
 
 „North star” to najmniejszy przebieg od początku do końca, którego ukończenie pokazuje, że sedno gry działa. Stoi tak wcześnie, jak pozwalają zależności, bo reszta sesji ma sens tylko wtedy, gdy ten przebieg działa.
 
-**S-04: Gracz kończy pierwszą turę i widzi wynik zlecenia** — ta tura jest pierwszym dowodem, że przekonywanie bohaterów w ogóle daje się zagrać. Cel nauki stawia ją przed wygraną sławą: najpierw ekran, mapa i fazy, dopiero potem próg zwycięstwa.
+**S-04: Gracz kończy pierwszą turę i widzi wynik zlecenia** — ta tura jest pierwszym dowodem, że przekonywanie bohaterów w ogóle daje się zagrać. Cel nauki stawia ją przed wygraną sławą: najpierw menu, mapa i fazy, dopiero potem próg zwycięstwa.
 
 ## At a glance
 
 | ID   | Change ID                     | Outcome (user can …)                                                                                                      | Prerequisites | PRD refs                         | Status   |
 | ---- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
-| S-01 | start-on-visible-map          | gracz może nadać lokalną nazwę, rozpocząć nową grę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych   | —             | US-01, FR-001, FR-008            | ready    |
+| S-07 | show-main-menu                | gracz może zobaczyć menu główne z przyciskami „New game” i „Continue”                                                     | —             | US-01, FR-001, FR-002            | ready    |
+| S-01 | start-on-visible-map          | gracz może po „New game” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych          | S-07          | US-01, FR-001, FR-008            | proposed |
 | S-02 | plan-subject-action           | gracz może wybrać sąsiednie pole i zaplanować zajęcie, farmę albo dom, a potem zakończyć fazę poddanych                  | S-01          | US-01, FR-003, FR-004, FR-005    | proposed |
 | S-03 | post-hero-announcement        | gracz może przejrzeć trzech bohaterów i wystawić ogłoszenie z polem oraz nagrodą w monetach                              | S-02          | US-01, FR-005, FR-006, FR-007    | blocked  |
 | S-04 | resolve-first-turn            | gracz może zakończyć turę i zobaczyć, czy bohater przyjął zlecenie oraz czy misja się udała, razem ze skutkiem planów poddanych | S-03          | US-01, FR-005, FR-014            | blocked  |
 | S-05 | repeat-turns-until-fame-win   | gracz może powtarzać tury i wygrać, gdy sława osiągnie próg                                                              | S-04          | US-01, FR-005                    | proposed |
-| S-06 | load-phase-one-autosave       | gracz może wyjść z sesji i wczytać ją z menu                                                                             | S-01          | US-01, FR-002                    | proposed |
+| S-06 | load-phase-one-autosave       | gracz może wyjść z sesji i wrócić do niej przyciskiem „Continue”                                                          | S-07, S-01    | US-01, FR-002                    | proposed |
 
 ## Streams
 
@@ -54,8 +55,8 @@ Pomoc przy czytaniu: grupuje plasterki o wspólnym łańcuchu zależności. Kole
 
 | Stream | Theme            | Chain                                              | Note                                                                                          |
 | ------ | ---------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| A      | Pętla tury       | `S-01` → `S-02` → `S-03` → `S-04` → `S-05`         | Nauka: najpierw widoczna plansza, potem pierwsza domknięta tura, a wygrana sławą dopiero za nią. |
-| B      | Powrót do sesji  | `S-06`                                             | Dołącza do strumienia A przy `S-01` i może iść obok `S-02`.                                   |
+| A      | Pętla tury       | `S-07` → `S-01` → `S-02` → `S-03` → `S-04` → `S-05` | Nauka: najpierw menu, potem widoczna plansza, potem pierwsza domknięta tura, a wygrana sławą dopiero za nią. |
+| B      | Powrót do sesji  | `S-06`                                             | Dołącza przy `S-07` (przycisk Continue) i przy `S-01` (sesja do zapisania); może iść obok `S-02`. |
 
 ## Baseline
 
@@ -71,22 +72,34 @@ Fundamenty poniżej zakładają, że te warstwy już są, i nie stawiają ich od
 
 ## Foundations
 
-Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie (patrz Baseline). Pierwszy ekran, na którym da się zagrać, wchodzi w S-01. Osobny fundament „cały ekran” dokończyłby warstwę, zanim powstanie jakakolwiek tura.
+Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie (patrz Baseline). Ekran menu jest w S-07. Pierwszy ekran, na którym da się zagrać, wchodzi w S-01. Osobny fundament „cały ekran” dokończyłby warstwę, zanim powstanie jakakolwiek tura.
 
 ## Slices
 
+### S-07: Main menu
+
+- **Outcome:** gracz może zobaczyć menu główne z przyciskami „New game” i „Continue”
+- **Change ID:** show-main-menu
+- **PRD refs:** US-01, FR-001, FR-002
+- **Prerequisites:** —
+- **Parallel with:** —
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** Plasterek to tylko te dwa przyciski. „New game” nie buduje mapy — to zostaje w S-01. „Continue” bez zapisu nie otwiera sesji — wczytanie zostaje w S-06. Inaczej ten plasterek połknąłby i planszę, i zapis. Na ekranie drugi przycisk brzmi „Continue”; FR-002 nadal nazywa tę akcję wczytaniem autosave.
+- **Status:** ready
+
 ### S-01: Widoczna plansza nowej gry
 
-- **Outcome:** gracz może nadać lokalną nazwę, rozpocząć nową grę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych
+- **Outcome:** gracz może po „New game” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych
 - **Change ID:** start-on-visible-map
 - **PRD refs:** US-01, FR-001, FR-008
-- **Prerequisites:** —
+- **Prerequisites:** S-07
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
   - Jak dokładnie ułożyć heksy poza minimum ze źródła (stolica, puste pola, neutralna wieś, potwór)? — Owner: user. Block: no.
-- **Risk:** To pierwsza nieznana warstwa: widoczna plansza. Bez niej nie ma czego dotykać, a reguły rozstrzygnięć już są i nie powinny wyprzedzać ekranu.
-- **Status:** ready
+- **Risk:** To pierwsza nieznana warstwa: widoczna plansza. Bez niej nie ma czego dotykać, a reguły rozstrzygnięć już są i nie powinny wyprzedzać ekranu. Samo menu jest w S-07.
+- **Status:** proposed
 
 ### S-02: Plan akcji poddanych
 
@@ -140,26 +153,27 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 
 ### S-06: Wczytanie zapisanej sesji
 
-- **Outcome:** gracz może wyjść z sesji i wczytać ją z menu
+- **Outcome:** gracz może wyjść z sesji i wrócić do niej przyciskiem „Continue”
 - **Change ID:** load-phase-one-autosave
 - **PRD refs:** US-01, FR-002
-- **Prerequisites:** S-01
+- **Prerequisites:** S-07, S-01
 - **Parallel with:** S-02
 - **Blockers:** —
 - **Unknowns:** —
-- **Risk:** Zapis potrzebuje tylko rozpoczętej sesji, więc może iść obok fazy poddanych. Przy małej liczbie godzin nie wyprzedza pierwszej grywalnej tury.
+- **Risk:** Zapis potrzebuje tylko rozpoczętej sesji, więc może iść obok fazy poddanych. Przycisk „Continue” jest już na menu z S-07; ten plasterek sprawia, że wczytuje autozapis z początku fazy pierwszej. Przy małej liczbie godzin nie wyprzedza pierwszej grywalnej tury.
 - **Status:** proposed
 
 ## Backlog Handoff
 
 | Roadmap ID | Change ID                   | Suggested issue title                                              | Ready for `/10x-plan` | Notes                                      |
 | ---------- | --------------------------- | ------------------------------------------------------------------ | --------------------- | ------------------------------------------ |
-| S-01       | start-on-visible-map        | Gracz zaczyna grę i widzi mapę oraz zasoby                         | yes                   | Uruchom `/10x-plan start-on-visible-map`   |
+| S-07       | show-main-menu              | Main menu                                                          | yes                   | Uruchom `/10x-plan show-main-menu`         |
+| S-01       | start-on-visible-map        | Gracz zaczyna grę i widzi mapę oraz zasoby                         | no                    | Czeka na S-07                              |
 | S-02       | plan-subject-action         | Gracz planuje akcję poddanych na sąsiednim polu                    | no                    | Czeka na S-01; potem obok S-06             |
 | S-03       | post-hero-announcement      | Gracz przegląda bohaterów i wystawia ogłoszenie                    | no                    | Blokuje brak liczb bohaterów               |
 | S-04       | resolve-first-turn          | Gracz rozstrzyga pierwszą turę                                     | no                    | Blokuje brak liczb bohaterów               |
 | S-05       | repeat-turns-until-fame-win | Gracz powtarza tury aż do wygranej sławą                           | no                    | Czeka na S-04                              |
-| S-06       | load-phase-one-autosave     | Gracz wczytuje zapisaną sesję z menu                               | no                    | Czeka na S-01; potem obok S-02             |
+| S-06       | load-phase-one-autosave     | Gracz wczytuje zapisaną sesję z menu                               | no                    | Czeka na S-07 i S-01; potem obok S-02      |
 
 ## Open Roadmap Questions
 
