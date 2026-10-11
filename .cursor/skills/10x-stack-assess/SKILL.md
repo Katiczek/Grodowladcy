@@ -4,93 +4,94 @@ description: >
   Assess an existing project's stack for agent-friendliness against the 4
   quality gates (typed, convention-based, popular, well-documented); writes
   context/foundation/stack-assessment.md with per-component scores, gaps, and
-  ready-to-paste CLAUDE.md/AGENTS.md entries. Trigger phrases: "assess my
+  ready-to-paste the project's AI configuration file (AGENTS.md) entries. Trigger phrases: "assess my
   stack", "is my stack agent-friendly", "oceń mój stack", "stack assessment".
   Use AFTER /10x-prd (brownfield), BEFORE /10x-health-check.
 ---
-# Ocena stosu: oceń istniejący stos pod kątem przyjazności dla agentów
 
-Ta umiejętność jest odpowiednikiem `/10x-tech-stack-selector` dla projektów brownfield. Podczas gdy tech-stack-selector pomaga użytkownikom greenfield **wybrać** stos, stack-assess pomaga użytkownikom brownfield **ocenić** ich stos. Wykorzystuje te same cztery bramki jakości przyjazne agentom (`references/agent-friendly-criteria.md`), ale stosuje je jako perspektywę oceny, a nie filtr wyboru.
+# Stack Assess: Evaluate an Existing Stack for Agent-Friendliness
 
-Umiejętność znajduje się w łańcuchu brownfield: `/10x-shape → /10x-prd → /10x-stack-assess → /10x-health-check`. Jej jedyne zadanie: ocenić istniejący stos względem bramek jakości i stworzyć ustrukturyzowaną ocenę z konkretnymi strategiami kompensacji.
+This skill is the brownfield counterpart to `/10x-tech-stack-selector`. Where tech-stack-selector helps greenfield users **choose** a stack, stack-assess helps brownfield users **evaluate** theirs. It reuses the same four agent-friendly quality gates (`references/agent-friendly-criteria.md`) but applies them as an evaluation lens rather than a selection filter.
 
-Kluczową wartością dla brownfield jest **ścieżka kompensacji** — gdy bramka nie przejdzie, umiejętność nie zaleca wymiany stosu. Dokumentuje, co dodać do plików instrukcji (pliku konfiguracji AI projektu (AGENTS.md)), aby agent mógł działać skutecznie pomimo luki.
+The skill sits in the brownfield chain: `/10x-shape → /10x-prd → /10x-stack-assess → /10x-health-check`. Its single job: evaluate the existing stack against the quality gates and produce a structured assessment with concrete compensation strategies.
 
-## Kiedy używać, kiedy pominąć
+The core brownfield value is the **compensation path** — when a gate fails, the skill doesn't recommend replacing the stack. It documents what to add to instruction files (the project's AI configuration file (AGENTS.md)) so the AI assistant can work effectively despite the gap.
 
-**Użyj, gdy**: użytkownik ma istniejący projekt i chce ocenić, jak dobrze jego stos wspiera przepływy pracy agentów AI. Katalog projektu powinien zawierać rozpoznawalne znaczniki projektu (`package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `Gemfile`, `composer.json`, `*.csproj`, `pubspec.yaml`). Opcjonalnie może istnieć `context/foundation/prd.md` (brownfield) — jeśli jest obecny, umiejętność używa go do osadzenia oceny w kontekście (np. określenia komponentów znajdujących się w zakresie zmian).
+## When to use, when to skip
 
-**Pomiń, gdy**: użytkownik rozpoczyna nowy projekt od zera — przekieruj do `/10x-tech-stack-selector`. Pomiń również, gdy użytkownik chce tylko audytu zależności lub skanowania bezpieczeństwa bez perspektywy bramek jakości — to obszar `/10x-health-check`.
+**Use when**: the user has an existing project and wants to evaluate how well their stack supports AI agent workflows. The project directory should contain recognizable project markers (`package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `Gemfile`, `composer.json`, `*.csproj`, `pubspec.yaml`). Optionally, `context/foundation/prd.md` (brownfield) exists — if present, the skill uses it to contextualize the assessment (e.g., which components are in the change scope).
 
-## Relacja z innymi umiejętnościami
+**Skip when**: the user is starting a new project from scratch — redirect to `/10x-tech-stack-selector`. Skip also when the user just wants a dependency audit or security scan without the quality-gate framing — that is `/10x-health-check` territory.
 
-- `/10x-shape` — etap wcześniejszy. Tworzy `shape-notes.md` z `context_type: brownfield`.
-- `/10x-prd` — etap wcześniejszy. Tworzy `context/foundation/prd.md` (szablon brownfield). Opcjonalne dane wejściowe — umiejętność może działać bez PRD.
-- `/10x-tech-stack-selector` — równoległy etap greenfield. Te same bramki jakości, inne zadanie (wybór vs ocena).
-- `/10x-health-check` — odbiorca na dalszym etapie. Odczytuje `context/foundation/stack-assessment.md`, aby skupić kontrole stanu na zidentyfikowanych lukach.
+## Relationship to other skills
 
-## Wymagane dane wejściowe
+- `/10x-shape` — upstream. Produces `shape-notes.md` with `context_type: brownfield`.
+- `/10x-prd` — upstream. Produces `context/foundation/prd.md` (brownfield template). Optional input — the skill can run without a PRD.
+- `/10x-tech-stack-selector` — greenfield parallel. Same quality gates, different job (selection vs evaluation).
+- `/10x-health-check` — downstream consumer. Reads `context/foundation/stack-assessment.md` to focus health checks on identified gaps.
 
-1. Istniejąca baza kodu w cwd z co najmniej jednym rozpoznawalnym znacznikiem projektu.
-2. `references/agent-friendly-criteria.md` — dołączony. Cztery bramki jakości i ścieżka kompensacji.
+## Required inputs
 
-## Opcjonalne dane wejściowe
+1. An existing codebase in cwd with at least one recognizable project marker.
+2. `references/agent-friendly-criteria.md` — bundled. The four quality gates and compensation path.
 
-1. `context/foundation/prd.md` — jeśli jest obecny i ma `context_type: brownfield`, umiejętność używa sekcji `## Scope of Change` i `## Current System Overview` z PRD, aby skupić ocenę na odpowiednich komponentach stosu.
+## Optional inputs
 
-## Początkowa odpowiedź
+1. `context/foundation/prd.md` — if present and has `context_type: brownfield`, the skill uses the PRD's `## Scope of Change` and `## Current System Overview` to focus the assessment on the relevant stack components.
 
-Gdy ta umiejętność zostanie wywołana:
+## Initial Response
 
-1. **Jeśli podano argument ścieżki** (np. `/10x-stack-assess @context/foundation/prd.md`), usuń początkowy znak `@`, jeśli występuje, i użyj ścieżki jako lokalizacji PRD dla tego uruchomienia. PRD jest opcjonalnym kontekstem, a nie warunkiem wstępnym — umiejętność działa bez niego.
-2. **Jeśli nie podano argumentu**, sprawdź `context/foundation/prd.md`. Jeśli jest obecny i ma `context_type: brownfield`, wczytaj go jako kontekst. Jeśli go nie ma, kontynuuj bez kontekstu PRD.
+When this skill is invoked:
 
-## Przepływ pracy
+1. **If a path argument was provided** (e.g. `/10x-stack-assess @context/foundation/prd.md`), strip a leading `@` if present and use the path as the PRD location for this run. The PRD is optional context, not a precondition — the skill runs without it.
+2. **If no argument was provided**, check for `context/foundation/prd.md`. If present and has `context_type: brownfield`, load it for context. If absent, proceed without PRD context.
 
-### Krok 0 — Warunek wstępny cwd
+## Workflow
 
-Wykryj znaczniki projektu:
+### Step 0 — Cwd precondition
+
+Detect project markers:
 
 ```bash
 find . -maxdepth 1 \( -name "package.json" -o -name "Cargo.toml" -o -name "pyproject.toml" -o -name "go.mod" -o -name "Gemfile" -o -name "composer.json" -o -name "*.csproj" -o -name "pubspec.yaml" \) 2>/dev/null
 ```
 
-Jeśli **nie znaleziono znaczników**, wyświetl:
+If **no markers found**, print:
 
 ```
 No project markers found in the current directory. /10x-stack-assess requires an existing codebase.
 If you're starting from scratch, use /10x-tech-stack-selector instead.
 ```
 
-Następnie ZATRZYMAJ.
+Then STOP.
 
-Jeśli znaleziono znaczniki, przejdź do Kroku 1.
+If markers are found, proceed to Step 1.
 
-### Krok 1 — Wykryj komponenty stosu
+### Step 1 — Detect stack components
 
-Sprawdź pliki projektu, aby zidentyfikować stos. Wykrywanie opiera się na plikach — sprawdzaj to, co jest na dysku, nie zgaduj.
+Read project files to identify the stack. The detection is file-driven — read what's on disk, don't guess.
 
-**Źródła wykrywania według rodziny języków:**
+**Detection sources by language family:**
 
-| Rodzina języków | Pliki znaczników | Co wyodrębnić |
+| Language family | Marker files | What to extract |
 |---|---|---|
-| JS/TS | `package.json`, `tsconfig.json`, `next.config.*`, `astro.config.*`, `vite.config.*`, `svelte.config.*`, `nuxt.config.*`, `angular.json`, `.eslintrc*`, `prettier.config.*`, `jest.config.*`, `vitest.config.*`, `playwright.config.*` | Język (JS vs TS — obecność `tsconfig.json`), framework, narzędzie budowania, runner testów, linter, formatter, menedżer pakietów (z pliku lock: `package-lock.json` → npm, `yarn.lock` → yarn, `pnpm-lock.yaml` → pnpm, `bun.lockb` → bun) |
-| Python | `pyproject.toml`, `setup.py`, `setup.cfg`, `requirements.txt`, `Pipfile`, `poetry.lock`, `uv.lock` | Framework (Django, FastAPI, Flask — z zależności), sprawdzanie typów (mypy/pyright w zależnościach lub konfiguracji), runner testów (pytest/unittest), menedżer pakietów |
-| Rust | `Cargo.toml` | Edycja, zależności dla frameworka webowego (Actix, Axum, Rocket), framework testowy |
-| Go | `go.mod` | Wersja Go, framework webowy (Gin, Echo, Fiber, Chi, stdlib), framework testowy |
-| Ruby | `Gemfile` | Framework (Rails, Sinatra), wersja Ruby, sprawdzanie typów (Sorbet/RBS), framework testowy (RSpec, Minitest) |
-| PHP | `composer.json` | Framework (Laravel, Symfony), wersja PHP, sprawdzanie typów (PHPStan/Psalm), framework testowy (PHPUnit, Pest) |
-| .NET | `*.csproj`, `*.sln` | Framework (wersja .NET, ASP.NET), język (C#/F#), framework testowy (xUnit, NUnit) |
-| Dart | `pubspec.yaml` | Framework (Flutter, serwer Dart), framework testowy |
+| JS/TS | `package.json`, `tsconfig.json`, `next.config.*`, `astro.config.*`, `vite.config.*`, `svelte.config.*`, `nuxt.config.*`, `angular.json`, `.eslintrc*`, `prettier.config.*`, `jest.config.*`, `vitest.config.*`, `playwright.config.*` | Language (JS vs TS — presence of `tsconfig.json`), framework, build tool, test runner, linter, formatter, package manager (from lockfile: `package-lock.json` → npm, `yarn.lock` → yarn, `pnpm-lock.yaml` → pnpm, `bun.lockb` → bun) |
+| Python | `pyproject.toml`, `setup.py`, `setup.cfg`, `requirements.txt`, `Pipfile`, `poetry.lock`, `uv.lock` | Framework (Django, FastAPI, Flask — from deps), type checking (mypy/pyright in deps or config), test runner (pytest/unittest), package manager |
+| Rust | `Cargo.toml` | Edition, dependencies for web framework (Actix, Axum, Rocket), test framework |
+| Go | `go.mod` | Go version, web framework (Gin, Echo, Fiber, Chi, stdlib), test framework |
+| Ruby | `Gemfile` | Framework (Rails, Sinatra), Ruby version, type checking (Sorbet/RBS), test framework (RSpec, Minitest) |
+| PHP | `composer.json` | Framework (Laravel, Symfony), PHP version, type checking (PHPStan/Psalm), test framework (PHPUnit, Pest) |
+| .NET | `*.csproj`, `*.sln` | Framework (.NET version, ASP.NET), language (C#/F#), test framework (xUnit, NUnit) |
+| Dart | `pubspec.yaml` | Framework (Flutter, Dart server), test framework |
 
-**Dodatkowe sygnały do sprawdzenia:**
+**Additional signals to check:**
 
 - CI/CD: `.github/workflows/`, `.gitlab-ci.yml`, `Jenkinsfile`, `.circleci/config.yml`, `cloudbuild.yaml`
-- Wdrażanie: `Dockerfile`, `docker-compose.yml`, `fly.toml`, `vercel.json`, `netlify.toml`, `wrangler.toml`, `render.yaml`, `railway.json`, `Procfile`
-- Pliki instrukcji: plik konfiguracji AI projektu (AGENTS.md), `.cursor/rules`, `.github/copilot-instructions.md`
-- Jakość konfiguracji: `.editorconfig`, `.prettierrc*`, `.eslintrc*`, `tsconfig.json` (sprawdzenie trybu strict)
+- Deployment: `Dockerfile`, `docker-compose.yml`, `fly.toml`, `vercel.json`, `netlify.toml`, `wrangler.toml`, `render.yaml`, `railway.json`, `Procfile`
+- Instruction files: the project's AI configuration file (AGENTS.md), the AI tool's configuration directory, `.github/copilot-instructions.md`
+- Config quality: `.editorconfig`, `.prettierrc*`, `.eslintrc*`, `tsconfig.json` (strict mode check)
 
-Przedstaw użytkownikowi wykryty stos:
+Echo the detected stack back to the user:
 
 ```
 Detected stack:
@@ -104,48 +105,49 @@ Detected stack:
   Instruction files: <list or "none">
 ```
 
-Zapytaj użytkownika: „Czy to wykrywanie jest poprawne? Czy czegoś brakuje lub coś jest nieprawidłowe?”
+Ask the user: "Is this detection accurate? Anything missing or wrong?"
 
-- Poprawne — kontynuuj (zalecane): Kontynuuj z tym wykrytym stosem.
-- Popraw coś: Poprawię wykrywanie przed punktacją.
+Offer these options:
+- **Accurate — proceed (Recommended)**: Continue with this detected stack.
+- **Correct something**: I'll fix the detection before scoring.
 
-Jeśli „Popraw coś”: zapytaj, który komponent poprawić, zastosuj nadpisanie w pamięci i kontynuuj.
+If "Correct something": ask which component to correct, apply the override in memory, proceed.
 
-### Krok 2 — Oceń względem bramek jakości
+### Step 2 — Score against quality gates
 
-Wczytaj `references/agent-friendly-criteria.md`.
+Load `references/agent-friendly-criteria.md`.
 
-Dla każdego wykrytego komponentu (język, framework, narzędzie budowania, runner testów) oceń go względem czterech bramek. Punktacja jest na poziomie komponentu, a nie projektu — projekt może mieć język typowany, ale framework nieoparty na konwencjach.
+For each detected component (language, framework, build tool, test runner), score against the four gates. The scoring is component-level, not project-level — a project can have a typed language but a non-convention-based framework.
 
-**Zasady punktacji:**
+**Scoring rules:**
 
-#### Bramka 1: Typowany
+#### Gate 1: Typed
 
-- **Zaliczone**: język domyślnie używa jawnych typów (TypeScript, Rust, Go, Java, Kotlin, C#, Dart) LUB projekt ma skonfigurowane sprawdzanie typów (Python + mypy/pyright w zależnościach/konfiguracji, Ruby + Sorbet/RBS, PHP + PHPStan/Psalm).
-- **Niezaliczone**: JavaScript bez TypeScript, Python bez skonfigurowanego sprawdzania typów, Ruby bez Sorbet/RBS, PHP bez analizy statycznej.
-- **Dowody**: wskaż konkretny plik/konfigurację potwierdzającą ocenę (np. „obecny `tsconfig.json` z `strict: true`” lub „brak `mypy` w `pyproject.toml [tool.mypy]` lub zależnościach deweloperskich”).
+- **Pass**: the language uses explicit types by default (TypeScript, Rust, Go, Java, Kotlin, C#, Dart) OR the project has type-checking configured (Python + mypy/pyright in deps/config, Ruby + Sorbet/RBS, PHP + PHPStan/Psalm).
+- **Fail**: JavaScript without TypeScript, Python without type checking configured, Ruby without Sorbet/RBS, PHP without static analysis.
+- **Evidence**: cite the specific file/config that proves the score (e.g., "`tsconfig.json` present with `strict: true`" or "no `mypy` in `pyproject.toml [tool.mypy]` or dev dependencies").
 
-#### Bramka 2: Oparty na konwencjach
+#### Gate 2: Convention-based
 
-- **Zaliczone**: framework zawiera silne założenia dotyczące układu folderów, routingu i konfiguracji (Next.js App Router, Rails, Django, Spring Boot, Astro, Angular, Laravel, .NET).
-- **Niezaliczone**: framework jest minimalny/nie narzuca opinii, a projekt nie ma udokumentowanych konwencji (Express, Koa, Flask bez blueprintów, Sinatra, czysty Vite + React).
-- **Częściowo zaliczone**: minimalny framework, ALE projekt ma udokumentowane konwencje w plikach instrukcji (pliku konfiguracji AI projektu (AGENTS.md)) lub widocznym dokumencie konwencji. Oceń jako zaliczone-z-uwagą.
-- **Dowody**: wskaż siłę konwencji frameworka lub ich brak.
+- **Pass**: the framework ships strong opinions about folder layout, routing, configuration (Next.js App Router, Rails, Django, Spring Boot, Astro, Angular, Laravel, .NET).
+- **Fail**: the framework is minimal/unopinionated and the project has no documented conventions (Express, Koa, Flask without blueprints, Sinatra, raw Vite + React).
+- **Partial pass**: minimal framework BUT the project has documented conventions in instruction files (the project's AI configuration file (AGENTS.md)) or a visible conventions document. Score as pass-with-note.
+- **Evidence**: cite the framework's convention strength or the absence of it.
 
-#### Bramka 3: Popularny w danych treningowych
+#### Gate 3: Popular in training data
 
-- **Ocena według rodziny języków** (kluczowa — zobacz `references/agent-friendly-criteria.md`). Oceniaj w ramach rodziny języków, a nie globalnie.
-- **Zaliczone**: framework jest popularnym wyborem w swoim ekosystemie językowym (React, Next.js, Vue, Angular w JS; Django, FastAPI, Flask w Pythonie; Rails w Ruby; Spring w Javie; Laravel w PHP; .NET w C#; Flutter w Darcie).
-- **Niezaliczone**: niszowy lub bardzo nowy framework z ograniczonymi danymi treningowymi w ramach własnej rodziny języków.
-- **Dowody**: podaj nazwę frameworka i jego pozycję w ekosystemie językowym.
+- **Per-language-family assessment** (load-bearing — see `references/agent-friendly-criteria.md`). Assess within the language family, not globally.
+- **Pass**: the framework is a mainstream choice within its language ecosystem (React, Next.js, Vue, Angular in JS; Django, FastAPI, Flask in Python; Rails in Ruby; Spring in Java; Laravel in PHP; .NET in C#; Flutter in Dart).
+- **Fail**: niche or very new framework with limited training data within its own language family.
+- **Evidence**: name the framework and its standing within the language ecosystem.
 
-#### Bramka 4: Dobrze udokumentowany
+#### Gate 4: Well-documented
 
-- **Zaliczone**: framework ma aktualną, wersjonowaną oficjalną dokumentację.
-- **Niezaliczone**: dokumentacja jest rozproszona, nieaktualna lub wiki utrzymywane przez społeczność nie jest zsynchronizowane.
-- **Dowody**: odnotuj obserwację dotyczącą jakości dokumentacji.
+- **Pass**: the framework has current, versioned official docs.
+- **Fail**: docs are scattered, outdated, or community-maintained wiki out of sync.
+- **Evidence**: note the doc quality observation.
 
-**Wyświetl macierz punktacji:**
+**Output the scoring matrix:**
 
 ```
 Quality Gate Assessment:
@@ -160,63 +162,64 @@ Quality Gate Assessment:
 Legend: ✓ = pass, ✗ = fail, ~ = partial, — = not applicable
 ```
 
-### Krok 3 — Zidentyfikuj strategie kompensacji
+### Step 3 — Identify compensation strategies
 
-Dla każdej niezaliczonej bramki utwórz konkretną strategię kompensacji. Kompensacja oznacza konkretne wpisy do dodania do plików instrukcji (pliku konfiguracji AI projektu (AGENTS.md)), aby agent mógł działać skutecznie pomimo luki.
+For each failed gate, produce a concrete compensation strategy. Compensation means specific entries to add to instruction files (the project's AI configuration file (AGENTS.md)) so the AI assistant can work effectively despite the gap.
 
-**Szablony kompensacji według niepowodzenia bramki:**
+**Compensation templates by gate failure:**
 
-**Typowany: niezaliczone** →
-- Dodaj do pliku konfiguracji AI projektu (AGENTS.md) konwencję jawnych adnotacji typów („Cały nowy kod musi zawierać adnotacje typów na granicach funkcji”)
-- Dodaj regułę walidacji na granicach („Używaj Zod/Pydantic/JSON Schema na granicach API”)
-- Jeśli Python: dodaj rekomendację konfiguracji mypy
-- Jeśli JS: dodaj ścieżkę migracji do TypeScript lub podpowiedzi typów JSDoc
+**Typed: fail** →
+- Add explicit type annotations convention to the project's AI configuration file (AGENTS.md) ("All new code must include type annotations at function boundaries")
+- Add validation-at-boundaries rule ("Use Zod/Pydantic/JSON Schema at API boundaries")
+- If Python: add mypy configuration recommendation
+- If JS: add TypeScript migration path or JSDoc type hints
 
-**Oparty na konwencjach: niezaliczone** →
-- Udokumentuj konwencje struktury folderów w pliku konfiguracji AI projektu (AGENTS.md) („Trasy znajdują się w src/routes/, middleware w src/middleware/, ...”)
-- Udokumentuj konwencje nazewnictwa („Pliki: kebab-case, eksporty: PascalCase dla komponentów, camelCase dla funkcji”)
-- Udokumentuj kolejność rejestracji middleware/wtyczek
-- Udokumentuj wzorzec obsługi błędów
+**Convention-based: fail** →
+- Document folder structure conventions in the project's AI configuration file (AGENTS.md) ("Routes live in src/routes/, middleware in src/middleware/, ...")
+- Document naming conventions ("Files: kebab-case, exports: PascalCase for components, camelCase for functions")
+- Document middleware/plugin registration order
+- Document error handling pattern
 
-**Popularny w danych treningowych: niezaliczone** →
-- Dodaj do pliku konfiguracji AI projektu (AGENTS.md) przykłady idiomów specyficznych dla frameworka
-- Podaj link do oficjalnej dokumentacji w pliku instrukcji
-- Dodaj reguły „preferuj wzorzec X zamiast Y” dla wyborów specyficznych dla frameworka
-- Zaznacz, że agent może potrzebować więcej wskazówek dla tego frameworka
+**Popular in training data: fail** →
+- Add framework-specific idiom examples to the project's AI configuration file (AGENTS.md)
+- Link to official docs in instruction file
+- Add "prefer X pattern over Y" rules for framework-specific choices
+- Note that the AI assistant may need more steering for this framework
 
-**Dobrze udokumentowany: niezaliczone** →
-- Przypnij wersję frameworka w pliku instrukcji
-- Dodaj linki do najlepszej dostępnej dokumentacji
-- Uwzględnij przykłady inline typowych wzorców
-- Zaznacz niuanse specyficzne dla wersji
+**Well-documented: fail** →
+- Pin framework version in instruction file
+- Add links to the best available docs
+- Include inline examples of common patterns
+- Note version-specific quirks
 
-Każdy wpis kompensacji musi być **gotowy do wklejenia** do pliku instrukcji — nie ogólna porada, lecz faktyczny tekst reguły.
+Each compensation entry must be **ready to paste** into an instruction file — not generic advice, but actual rule text.
 
-### Krok 4 — Ustal ogólny werdykt
+### Step 4 — Determine overall verdict
 
-Na podstawie macierzy punktacji i dostępnej kompensacji:
+Based on the scoring matrix and available compensation:
 
-- **ready**: wszystkie bramki są zaliczone dla wszystkich komponentów. Stos jest przyjazny agentom od razu po uruchomieniu.
-- **ready-with-compensation**: niektóre bramki są niezaliczone, ale wszystkie niepowodzenia mają jasne strategie kompensacji. Stos działa z udokumentowanymi konwencjami.
-- **significant-friction**: wiele bramek jest niezaliczonych ORAZ kompensacja jest rozbudowana (np. nietypowany język + framework nieoparty na konwencjach + niszowy w danych treningowych). Agent będzie potrzebować istotnego prowadzenia.
+- **ready**: all gates pass for all components. The stack is agent-friendly out of the box.
+- **ready-with-compensation**: some gates fail but all failures have clear compensation strategies. The stack works with documented conventions.
+- **significant-friction**: multiple gates fail AND compensation is heavy (e.g., untyped language + non-convention framework + niche in training data). The AI assistant will need substantial steering.
 
-Werdykt ma charakter informacyjny, a nie blokujący. Nawet `significant-friction` nie oznacza „zmień stos” — oznacza „przeznacz więcej czasu na tworzenie plików instrukcji i oczekuj większej liczby cykli korekty agenta”.
+The verdict is informational, not blocking. Even `significant-friction` doesn't mean "switch stacks" — it means "budget more time for instruction file authoring and expect more AI assistant correction cycles."
 
-### Krok 5 — Zapisz ocenę
+### Step 5 — Write assessment
 
-Sprawdź kolizję:
+Check for collision:
 
 ```bash
 test -f context/foundation/stack-assessment.md
 ```
 
-Jeśli plik istnieje, zapytaj użytkownika: „context/foundation/stack-assessment.md już istnieje. Jak chcesz kontynuować?”
+If the file exists, ask the user: "context/foundation/stack-assessment.md already exists. How would you like to proceed?"
 
-- Nadpisz (zalecane): Zastąp istniejącą ocenę. Poprzednia wersja zostanie utracona, chyba że została zatwierdzona w repozytorium.
-- Zapisz jako stack-assessment-v2.md: Zachowaj historię. Nowa ocena trafi do kolejnego dostępnego slotu wersji.
-- Przerwij: Zakończ bez zapisywania. Ocena z rozmowy zostanie zachowana wyłącznie na czacie.
+Offer these options:
+- **Overwrite (Recommended)**: Replace the existing assessment. The prior version is lost unless committed.
+- **Save as stack-assessment-v2.md**: Preserve history. New assessment lands at the next available version slot.
+- **Abort**: Exit without writing. The conversation assessment is preserved in chat only.
 
-Zbuduj plik wyjściowy:
+Build the output file:
 
 ```markdown
 ---
@@ -254,16 +257,16 @@ gates_failed: <N>
 
 ### Recommended Instruction File Additions
 
-<ready-to-paste project's AI configuration file (AGENTS.md) entries for each compensation strategy, formatted as markdown rule blocks the user can copy directly>
+<ready-to-paste the project's AI configuration file (AGENTS.md) entries for each compensation strategy, formatted as markdown rule blocks the user can copy directly>
 
 ## Summary
 
 <overall verdict, key strengths, key gaps, and recommended next step (/10x-health-check)>
 ```
 
-Zapisz do `context/foundation/stack-assessment.md` (tworząc `context/foundation/`, jeśli nie istnieje).
+Write to `context/foundation/stack-assessment.md` (creating `context/foundation/` if it doesn't exist).
 
-Po zapisie skopiuj polecenie następnego kroku i ogłoś:
+After the write, copy the next-step command and announce:
 
 ```bash
 echo -n "/10x-health-check" | pbcopy 2>/dev/null || echo -n "/10x-health-check" | clip.exe 2>/dev/null || echo -n "/10x-health-check" | xclip -selection clipboard 2>/dev/null || true
@@ -274,7 +277,7 @@ echo -n "/10x-health-check" | pbcopy 2>/dev/null || echo -n "/10x-health-check" 
 Set-Clipboard "/10x-health-check"
 ```
 
-Wyświetl:
+Print:
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -290,28 +293,28 @@ Wyświetl:
 ═══════════════════════════════════════════════════════════
 ```
 
-ZATRZYMAJ. Nie przechodź automatycznie do `/10x-health-check` — użytkownik uruchamia je, gdy jest gotowy.
+STOP. Do not chain into `/10x-health-check` automatically — the user runs it when ready.
 
-## Wynik
+## Output
 
-Zapisywany jest pojedynczy plik: `context/foundation/stack-assessment.md` (lub `stack-assessment-vN.md`, jeśli wybrano zapis wersjonowany).
+Single file written: `context/foundation/stack-assessment.md` (or `stack-assessment-vN.md` if a versioned save was picked).
 
-## Referencje
+## References
 
-- `references/agent-friendly-criteria.md` — cztery bramki jakości, zastrzeżenie dotyczące poszczególnych rodzin języków, ścieżka kompensacji.
+- `references/agent-friendly-criteria.md` — the four quality gates, per-language-family caveat, compensation path.
 
-## Kluczowe zabezpieczenia
+## Critical guardrails
 
-1. **Cwd jest warunkiem wstępnym.** Umiejętność wymaga istniejącej bazy kodu z rozpoznawalnymi znacznikami projektu. Nie twórz oceny wyłącznie na podstawie kontekstu rozmowy.
+1. **Cwd is a precondition.** The skill requires an existing codebase with recognizable project markers. No assessment from conversation context alone.
 
-2. **Oceniaj, nie zalecaj wymiany.** Umiejętność nigdy nie zaleca zmiany stosu. Ocenia to, co istnieje, i dostarcza strategie kompensacji. Użytkownik wybrał swój stos z powodów, których umiejętność nie zna — uszanuj ten wybór.
+2. **Evaluate, don't recommend replacing.** The skill never recommends switching stacks. It assesses what exists and provides compensation strategies. The user chose their stack for reasons the skill doesn't know — respect that choice.
 
-3. **Ocena według rodziny języków dla bramki 3.** Oceniaj „popularność w danych treningowych” w ramach rodziny języków, a nie globalnie. Django jest popularne w Pythonie; fakt, że ma mniej pobrań npm niż React, jest nieistotny.
+3. **Per-language-family assessment for gate 3.** Assess "popular in training data" within the language family, not globally. Django is popular in Python; that it has fewer npm downloads than React is irrelevant.
 
-4. **Kompensacja jest konkretna, a nie ogólna.** Każdy wpis kompensacji musi być regułą pliku instrukcji gotową do wklejenia. „Dodaj lepszą dokumentację” nie jest kompensacją; „Dodaj do pliku konfiguracji AI projektu (AGENTS.md): `## Routing — Routes are registered in src/routes/index.ts. Each route file exports a default Hono handler. Middleware runs in registration order.`” jest kompensacją.
+4. **Compensation is concrete, not generic.** Every compensation entry must be a ready-to-paste instruction file rule. "Add better documentation" is not compensation; "Add to the project's AI configuration file (AGENTS.md): `## Routing — Routes are registered in src/routes/index.ts. Each route file exports a default Hono handler. Middleware runs in registration order.`" is compensation.
 
-5. **Dowody dla każdej oceny.** Każde zaliczenie lub niezaliczenie bramki musi wskazywać konkretny plik, sekcję konfiguracji lub ich brak, które uzasadniają ocenę. Żadnych ocen opartych na przeczuciu.
+5. **Evidence for every score.** Every gate pass or fail must cite the specific file, config section, or absence thereof that justifies the score. No vibes-based assessment.
 
-6. **Wewnętrzne etykiety umiejętności pozostają wewnętrzne.** Rozmawiając z użytkownikiem, nigdy nie odwołuj się do numerów bramek („Bramka 1”), liter kroków („Krok 2”) ani wewnętrznych nazw pól (`agent_readiness`, `gates_passed`). Używaj zwykłego języka: „bezpieczeństwo typów twojego stosu”, „ogólna gotowość na agentów”, „ile kryteriów spełnia twój stos”.
+6. **Skill-internal labels stay internal.** When speaking to the user, never reference gate numbers ("Gate 1"), step letters ("Step 2"), or internal field names (`agent_readiness`, `gates_passed`). Use plain language: "your stack's type safety", "overall agent-readiness", "how many criteria your stack meets."
 
-7. **Wyłącznie uniwersalny język.** W dostarczanej treści nie umieszczaj prywatnych ścieżek vault ani brandingu specyficznego dla organizacji.
+7. **Universal language only.** No private vault paths or organization-specific branding in shipped content.

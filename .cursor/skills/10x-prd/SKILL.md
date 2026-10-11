@@ -9,104 +9,105 @@ description: >
   "generate PRD", "create the PRD from notes", "stwórz PRD", "turn notes into a
   PRD", "PRD from shape-notes". Use AFTER /10x-shape, not in place of it.
 ---
-# PRD: Generowanie context/foundation/prd.md z shape-notes
 
-Ta umiejętność jest drugim ogniwem w łańcuchu bootstrapowania. Dla greenfield: `/10x-shape → /10x-prd → 10x-tech-stack-selector → bootstrapper`. Dla brownfield: `/10x-shape → /10x-prd → 10x-stack-assess → 10x-health-check`. Jej jedyne zadanie: wziąć plik ukształtowanych notatek i wygenerować `context/foundation/prd.md`, który jest zgodny z zablokowanym schematem PRD, kierując każdą lukę do `## Open Questions` zamiast wymyślać treść.
+# PRD: Generate context/foundation/prd.md from shape-notes
 
-Umiejętność automatycznie kieruje do poprawnego szablonu na podstawie `context_type` w danych wejściowych:
-- **greenfield** → 10-sekcyjny szablon PRD (produkt budowany od podstaw)
-- **brownfield** → 11-sekcyjny szablon PRD (zmiana różnicowa w istniejącym systemie)
+This skill is the second link in the bootstrap chain. For greenfield: `/10x-shape → /10x-prd → 10x-tech-stack-selector → bootstrapper`. For brownfield: `/10x-shape → /10x-prd → 10x-stack-assess → 10x-health-check`. Its single job: take a shaped notes file and emit a `context/foundation/prd.md` that conforms to the locked PRD schema, routing every gap to `## Open Questions` rather than inventing content.
 
-Ta umiejętność jest **generatorem dokumentów**, a nie moderatorem procesu odkrywania. NIGDY nie wymyśla decyzji domenowych, reguł logiki biznesowej, kryteriów sukcesu ani historyjek użytkownika. Wszystko, czego brakuje w danych wejściowych, trafia dosłownie do `## Open Questions`, aby człowiek mógł to rozstrzygnąć.
+The skill auto-routes to the correct template based on `context_type` in the input:
+- **greenfield** → 10-section PRD template (product built from scratch)
+- **brownfield** → 11-section PRD template (delta-change to an existing system)
 
-Zablokowany schemat, z którym zgodna jest ta umiejętność, znajduje się w `../10x-shape/references/prd-schema.md` (względem tego SKILL.md). Przeczytaj go przed wygenerowaniem jakiegokolwiek artefaktu i ponownie sprawdź względem niego utworzony plik przed zapisaniem na dysk.
+The skill is a **document generator**, not a discovery facilitator. It NEVER invents domain decisions, business-logic rules, success criteria, or user stories. Anything missing in the input goes verbatim into `## Open Questions` so a human can resolve it.
 
-## Kiedy używać, kiedy pomijać
+The locked schema this skill conforms to lives at `../10x-shape/references/prd-schema.md` (relative to this SKILL.md). Read it before generating any artifact and re-check the produced file against it before writing to disk.
 
-**Używaj, gdy**: użytkownik uruchomił `/10x-shape` (a `context/foundation/shape-notes.md` istnieje z blokiem checkpoint), LUB użytkownik ma plik surowych notatek, który chce przekształcić w szkic PRD, LUB użytkownik wyraźnie prosi o (ponowne) wygenerowanie `context/foundation/prd.md`.
+## When to use, when to skip
 
-**Pomiń, gdy**: użytkownik nadal tworzy pomysły i nie ma notatek — najpierw wskaż `/10x-shape`. Pomiń także, gdy użytkownik chce ręcznie *edytować* istniejący PRD — ta umiejętność zapisuje całe pliki; precyzyjne edycje są poza zakresem.
+**Use when**: the user has run `/10x-shape` (and `context/foundation/shape-notes.md` exists with a checkpoint block), OR the user has a raw notes file they want turned into a PRD draft, OR the user explicitly asks to (re-)generate `context/foundation/prd.md`.
 
-## Relacja z innymi umiejętnościami
+**Skip when**: the user is still ideating and has no notes — point at `/10x-shape` first. Skip also when the user wants to *edit* an existing PRD by hand — this skill writes whole files; surgical edits are out of scope.
 
-- `/10x-shape` — tworzy `shape-notes.md`, kanoniczne dane wejściowe. Zawsze preferowany etap poprzedzający tę umiejętność.
-- `10x-tech-stack-selector` — dalszy konsument `prd.md` dla **greenfield**. Odczytuje frontmatter na poziomie produktu jako priory i prowadzi własny dodatkowy wywiad dotyczący składu zespołu, preferencji językowych, wdrożenia oraz kształtu CI/CD.
-- `10x-stack-assess` — dalszy konsument `prd.md` dla **brownfield**. Ocenia istniejący stack względem bramek jakości przyjaznych agentom.
-- `/10x-frame`, `/10x-plan` — niezwiązane; PRD jest artefaktem fundamentowym, a nie planem dla pojedynczej zmiany.
+## Relationship to other skills
 
-## Początkowa odpowiedź
+- `/10x-shape` — produces `shape-notes.md`, the canonical input. Always preferred upstream of this skill.
+- `10x-tech-stack-selector` — downstream consumer of `prd.md` for **greenfield**. Reads the product-level frontmatter as priors and runs its own residual interview for team composition, language preferences, deployment, and CI/CD shape.
+- `10x-stack-assess` — downstream consumer of `prd.md` for **brownfield**. Evaluates the existing stack against agent-friendly quality gates.
+- `/10x-frame`, `/10x-plan` — unrelated; PRD is a foundation artifact, not a per-change plan.
 
-Gdy ta umiejętność jest wywoływana:
+## Initial Response
 
-1. **Jeśli podano argument ścieżki** (np. `/10x-prd @notes/raw.md` lub `/10x-prd context/foundation/shape-notes.md`), przechwyć go jako ścieżkę wejściową. Przejdź do Kroku 1.
-2. **Jeśli nie podano argumentu**, ustaw domyślną ścieżkę wejściową na `context/foundation/shape-notes.md` i przejdź do Kroku 1. Nie pytaj jeszcze — Krok 1 obsługuje przypadek braku danych wejściowych.
+When this skill is invoked:
 
-## Proces
+1. **If a path argument was provided** (e.g. `/10x-prd @notes/raw.md` or `/10x-prd context/foundation/shape-notes.md`), capture it as the input path. Proceed to Step 1.
+2. **If no argument was provided**, default the input path to `context/foundation/shape-notes.md` and proceed to Step 1. Do not prompt yet — Step 1 handles the missing-input case.
 
-### Krok 1: Zlokalizuj dane wejściowe
+## Process
 
-Rozwiąż ścieżkę wejściową:
+### Step 1: Locate input
 
-- Jeśli przekazano argument, użyj go dosłownie (usuń początkowy `@`, jeśli występuje).
-- W przeciwnym razie użyj domyślnie `context/foundation/shape-notes.md`.
+Resolve the input path:
 
-Przetestuj rozwiązaną ścieżkę:
+- If an argument was passed, use it verbatim (strip a leading `@` if present).
+- Otherwise, default to `context/foundation/shape-notes.md`.
+
+Test the resolved path:
 
 ```bash
 test -f "<resolved-path>"
 ```
 
-Jeśli plik istnieje, przeczytaj go W CAŁOŚCI (bez `limit`/`offset`) i przejdź do Kroku 1.5.
+If the file exists, read it FULLY (no `limit`/`offset`) and proceed to Step 1.5.
 
-Jeśli plik nie istnieje, zapytaj użytkownika:
+If the file does not exist, ask the user:
 
-**Dane wejściowe?** Nie znaleziono pliku wejściowego w `<resolved-path>`. Jak chcesz kontynuować?
+**Input?** No input file found at `<resolved-path>`. How would you like to proceed?
 
-- **Najpierw uruchom /10x-shape (Zalecane)**: Zatrzymaj się tutaj. Uruchom `/10x-shape`, aby utworzyć shape-notes.md, a następnie ponownie wywołaj `/10x-prd`.
-- **Wklej surowe notatki**: Poczekaj, aż użytkownik wklei dowolne posiadane notatki. Kontrola ubogich danych wejściowych ostrzeże o brakujących sygnałach.
-- **Anuluj**: Zakończ bez zmian.
+- **Run /10x-shape first (Recommended)**: Stop here. Run `/10x-shape` to produce shape-notes.md, then re-invoke `/10x-prd`.
+- **Paste raw notes**: Wait for the user to paste any notes they have. The thin-input check will warn about missing signals.
+- **Cancel**: Exit without changes.
 
-Po wybraniu „Najpierw uruchom /10x-shape”: wypisz „Stopping. Run `/10x-shape` to produce shape-notes.md, then re-invoke `/10x-prd`.” i ZATRZYMAJ SIĘ.
+On "Run /10x-shape first": print "Stopping. Run `/10x-shape` to produce shape-notes.md, then re-invoke `/10x-prd`." and STOP.
 
-Po wybraniu „Wklej surowe notatki”: wyświetl komunikat „Paste your notes below. End with an empty line.” i przechwyć tekst użytkownika jako dane wejściowe w pamięci. Przejdź do Kroku 1.5 z tą treścią.
+On "Paste raw notes": prompt "Paste your notes below. End with an empty line." and capture the user's text as the in-memory input. Proceed to Step 1.5 with that content.
 
-Po wybraniu „Anuluj”: ZATRZYMAJ SIĘ bez zmian.
+On "Cancel": STOP without changes.
 
-### Krok 1.5: Określ typ kontekstu
+### Step 1.5: Determine context type
 
-Określ, czy wygenerować PRD greenfield, czy brownfield:
+Determine whether to generate a greenfield or brownfield PRD:
 
-1. **Jeśli dane wejściowe mają `context_type:` w frontmatter** — użyj tej wartości bezpośrednio. Potwierdzenie nie jest potrzebne.
-2. **Jeśli w frontmatter nie ma `context_type:`** (surowe notatki, wklejone dane wejściowe) — automatycznie wykryj na podstawie cwd:
+1. **If the input has `context_type:` in frontmatter** — use that value directly. No confirmation needed.
+2. **If no `context_type:` in frontmatter** (raw notes, pasted input) — auto-detect from cwd:
 
-   Użyj tego samego wykrywania wielosygnałowego co `/10x-shape` (Krok 0.7): sprawdź historię git (Tier 1), lockfiles (Tier 2), pliki manifestów (Tier 3) oraz dodatkowe sygnały (katalogi źródłowe, konfiguracje frameworków). Każde trafienie Tier 1 lub Tier 2 → zaproponuj brownfield. Tylko Tier 3 → zaproponuj brownfield z flagą niejednoznaczności. Brak sygnałów → zaproponuj greenfield.
+   Use the same multi-signal detection as `/10x-shape` (Step 0.7): check for git history (Tier 1), lockfiles (Tier 2), manifest files (Tier 3), and bonus signals (source dirs, framework configs). Any Tier 1 or Tier 2 hit → propose brownfield. Tier 3 only → propose brownfield with ambiguity flag. No signals → propose greenfield.
 
-   Zapytaj użytkownika:
+   Ask the user:
 
-   **Kontekst** Nie znaleziono context_type w danych wejściowych. Na podstawie markerów cwd wygląda to na [greenfield|brownfield]. Zgadza się?
+   **Context** No context_type found in the input. Based on cwd markers, this looks like [greenfield|brownfield]. Correct?
 
-   - **[Wykryty tryb] — poprawny (Zalecane)**: Wygeneruj PRD [greenfield|brownfield].
-   - **[Inny tryb] — zastąp**: Wygeneruj zamiast tego PRD [other].
+   - **[Detected mode] — correct (Recommended)**: Generate a [greenfield|brownfield] PRD.
+   - **[Other mode] — override**: Generate a [other] PRD instead.
 
-Zapisz rozstrzygnięty `context_type` do użycia w Krokach 2 i 3. Przejdź do Kroku 2.
+Store the resolved `context_type` for use in Steps 2 and 3. Proceed to Step 2.
 
-### Krok 2: Oceń dane wejściowe
+### Step 2: Assess input
 
-Oceń dane wejściowe według heurystyki 0–4 ukształtowane-vs-ubogie. Każdy sygnał daje 1 punkt:
+Score the input on a 0–4 shaped-vs-thin heuristic. Each signal contributes 1 point:
 
-**Sygnały greenfield:**
+**Greenfield signals:**
 
-1. **Obecny blok frontmatter `checkpoint:`** — najsilniejszy sygnał, że dane pochodzą z `/10x-shape`. Poszukaj dosłownego klucza `checkpoint:` wewnątrz ogrodzenia YAML frontmatter na początku pliku.
-2. **Co najmniej jedno wymaganie w formacie FR-NNN** — użyj grep dla `^- FR-\d{3}: ` (wypunktowany wiersz, trzycyfrowy indeks dopełniony zerami, dwukropek-spacja).
-3. **Co najmniej jeden blok Given/When/Then** — użyj grep dla `\*\*Given\*\*` ORAZ `\*\*When\*\*` ORAZ `\*\*Then\*\*` w dowolnym miejscu treści.
-4. **Jawne uchwycenie logiki biznesowej** — istnieje sekcja `## Business Logic` ORAZ jej pierwszy niepusty wiersz jest pojedynczym zdaniem oznajmującym (heurystyka: ≤ 200 znaków, kończy się `.`, nie jest równy `# TODO: domain rule — see Open Questions` i nie jest pusty/placeholderem).
+1. **Frontmatter `checkpoint:` block present** — strongest signal that this came from `/10x-shape`. Look for the literal `checkpoint:` key inside a YAML frontmatter fence at the top of the file.
+2. **At least one FR-NNN-format requirement** — grep for `^- FR-\d{3}: ` (bulleted line, three-digit zero-padded index, colon-space).
+3. **At least one Given/When/Then block** — grep for `\*\*Given\*\*` AND `\*\*When\*\*` AND `\*\*Then\*\*` anywhere in the body.
+4. **Explicit business-logic capture** — a `## Business Logic` section exists AND its first non-blank line is a single declarative sentence (heuristic: ≤ 200 chars, ends in `.`, not equal to `# TODO: domain rule — see Open Questions` and not blank/placeholder).
 
-**Sygnały brownfield** (zastępują sygnał 1, gdy `context_type: brownfield`):
+**Brownfield signals** (replace signal 1 when `context_type: brownfield`):
 
-1. **Obecny blok frontmatter `checkpoint:` ORAZ `context_type: brownfield`** — najsilniejszy sygnał, że dane pochodzą z `/10x-shape` w trybie brownfield. Sprawdź także sekcję `## Current System` w treści.
-2–4. Tak samo jak dla greenfield.
+1. **Frontmatter `checkpoint:` block present AND `context_type: brownfield`** — strongest signal that this came from `/10x-shape` in brownfield mode. Also check for `## Current System` section in the body.
+2–4. Same as greenfield.
 
-Oblicz sumę. Jawnie udokumentuj heurystykę w rozmowie, aby przyszły opiekun mógł ją dostroić:
+Compute the total. Document the heuristic explicitly in the conversation so a future maintainer can tune it:
 
 ```
 Input assessment (heuristic, 4 signals, 1 point each):
@@ -118,9 +119,9 @@ Input assessment (heuristic, 4 signals, 1 point each):
   Score: <N>/4
 ```
 
-**Wynik ≥ 2**: dane wejściowe są wystarczająco ukształtowane; przejdź cicho do Kroku 3.
+**Score ≥ 2**: input is shaped enough; proceed to Step 3 silently.
 
-**Wynik < 2**: uruchom ostrzeżenie o ubogich danych wejściowych. Nazwij jawnie każdy brakujący sygnał (NIE wypisuj ogólnego „twoje notatki są ubogie” — nazwij, czego brakuje i dlaczego to ważne):
+**Score < 2**: trigger the thin-input warning. Name each missing signal explicitly (do NOT print a generic "your notes are thin" — name what's missing and why it matters):
 
 ```
 This input scored <N>/4 on the shape heuristic. Missing signals:
@@ -133,49 +134,49 @@ A PRD generated from thin input will have many `# TODO` placeholders and a long
 time to run /10x-shape first, the resulting PRD will be substantially stronger.
 ```
 
-Następnie zapytaj użytkownika:
+Then ask the user:
 
-**Ubogie dane wejściowe** Jak chcesz kontynuować?
+**Thin input** How would you like to proceed?
 
-- **Najpierw uruchom /10x-shape (Zalecane)**: Zatrzymaj się tutaj. Użyj `/10x-shape`, aby uzupełnić brakujące sygnały, a następnie ponownie wywołaj `/10x-prd`.
-- **Mimo to kontynuuj**: Wygeneruj PRD na podstawie tego, co jest. Brakujące elementy trafią dosłownie do `## Open Questions`.
-- **Anuluj**: Zakończ bez zmian.
+- **Run /10x-shape first (Recommended)**: Stop here. Use `/10x-shape` to fill in the missing signals, then re-invoke `/10x-prd`.
+- **Proceed anyway**: Generate the PRD from what's there. Missing pieces land in `## Open Questions` verbatim.
+- **Cancel**: Exit without changes.
 
-Po wybraniu „Najpierw uruchom /10x-shape”: wypisz komunikat przekierowania i ZATRZYMAJ SIĘ. Po wybraniu „Mimo to kontynuuj”: przejdź do Kroku 3 z zapisanym `score < 2`, aby późniejsze kroki wiedziały, że należy oczekiwać TODOs. Po wybraniu „Anuluj”: ZATRZYMAJ SIĘ.
+On "Run /10x-shape first": print the redirect message and STOP. On "Proceed anyway": continue to Step 3 with `score < 2` recorded so later steps know to expect TODOs. On "Cancel": STOP.
 
-### Krok 3: Wygeneruj PRD
+### Step 3: Generate PRD
 
-Przeczytaj referencję schematu W CAŁOŚCI jeszcze raz (`../10x-shape/references/prd-schema.md`), aby potwierdzić, że lista pól i nazwy sekcji nie uległy zmianie.
+Read the schema reference FULLY one more time (`../10x-shape/references/prd-schema.md`) to confirm the field list and section names have not drifted.
 
-Najpierw zbuduj zawartość PRD **w pamięci** (jeszcze nie na dysku):
+Build the PRD content **in memory first** (not on disk yet):
 
 #### 3a. Frontmatter
 
-Wypełnij każde wymagane pole frontmatter zgodnie ze schematem:
+Populate every required frontmatter field per the schema:
 
-- `project` — wyodrębnij z input frontmatter `project:`, jeśli występuje; w przeciwnym razie z nagłówka Title (`# <Project>`); w przeciwnym razie `# TODO: project — see Open Questions`.
-- `version` — `1` dla pierwszego PRD zapisywanego przez tę umiejętność. Krok kolizji (Krok 4) zwiększa tę wartość, jeśli użytkownik wybierze zapis wersjonowany.
-- `status` — `draft`. Nigdy nie promuj do `reviewed`/`locked`; to decyzja dalszego etapu.
-- `created` — dzisiejsza data w formacie `YYYY-MM-DD` (użyj `date +%Y-%m-%d`).
-- `context_type` — `greenfield` lub `brownfield` (z Kroku 1.5).
-- `product_type` — pobierz z danych wejściowych, jeśli dostępne; w przeciwnym razie `# TODO: product_type — see Open Questions` (i dodaj wpis Open Question).
-- `target_scale`, `timeline_budget` — ta sama zasada. Jeśli dane wejściowe zawierają pole, skopiuj je dosłownie; jeśli nie, wygeneruj `# TODO: <field> — see Open Questions` i dodaj pasujące Open Question. Dla brownfield `timeline_budget` używa `delivery_weeks` zamiast `mvp_weeks`.
+- `project` — extract from input frontmatter `project:` if present; otherwise from a Title heading (`# <Project>`); otherwise `# TODO: project — see Open Questions`.
+- `version` — `1` for the first PRD this skill writes. The collision step (Step 4) bumps this if the user picks a versioned save.
+- `status` — `draft`. Never promote to `reviewed`/`locked`; that's a downstream decision.
+- `created` — today's date in `YYYY-MM-DD` (use `date +%Y-%m-%d`).
+- `context_type` — `greenfield` or `brownfield` (from Step 1.5).
+- `product_type` — pull from input if available; otherwise `# TODO: product_type — see Open Questions` (and add an Open Question entry).
+- `target_scale`, `timeline_budget` — same rule. If the input has the field, copy it verbatim; if not, emit `# TODO: <field> — see Open Questions` and add a matching Open Question. For brownfield, `timeline_budget` uses `delivery_weeks` instead of `mvp_weeks`.
 
-**NIE wypełniaj** `team_profile`, `tech_preferences` ani `deployment_constraint` we frontmatter PRD, nawet gdy notatki wejściowe je zawierają. Pola te są zbierane przez dalszy etap wyboru tech-stack (greenfield) lub oceny stacku (brownfield), a nie przez PRD. Jeśli dane wejściowe je zawierają, podsumuj je w komunikacie przekazania Kroku 5 pod „forward to tech-stack/stack-assess”, aby użytkownik wiedział, że treść jest kierowana dalej, a nie po cichu odrzucana — ale NIE umieszczaj ich we frontmatter PRD.
+**Do NOT populate** `team_profile`, `tech_preferences`, or `deployment_constraint` into PRD frontmatter, even when the input notes carry them. Those fields are gathered by the downstream tech-stack-selection (greenfield) or stack-assessment (brownfield) step, not by PRD. If the input has them, summarize them into the Step 5 hand-off message under "forward to tech-stack/stack-assess" so the user knows the content is being routed, not silently dropped — but DO NOT emit them in PRD frontmatter.
 
-Nazwy kluczy pól są zgodnie ze schematem nośne. Wartości pól nie są.
+Field key names are load-bearing per the schema. Field values are not.
 
-#### 3b. Wymagane sekcje (w kolejności schematu)
+#### 3b. Required sections (in schema order)
 
-Lista sekcji zależy od `context_type`:
+The section list depends on `context_type`:
 
-**Greenfield (10 sekcji):**
+**Greenfield (10 sections):**
 
-Wygeneruj dokładnie te 10 nagłówków na poziomie `##`, w dokładnie tej kolejności (kontrakt nazw sekcji schematu określa, według czego parsery dalszych etapów dzielą dokument):
+Emit exactly these 10 `##`-level headings, in this exact order (the schema's section-name contract is what downstream parsers split on):
 
 1. `## Vision & Problem Statement`
 2. `## User & Persona`
-3. `## Success Criteria` (z `### Primary` / `### Secondary` / `### Guardrails`)
+3. `## Success Criteria` (with `### Primary` / `### Secondary` / `### Guardrails`)
 4. `## User Stories`
 5. `## Functional Requirements`
 6. `## Non-Functional Requirements`
@@ -184,73 +185,73 @@ Wygeneruj dokładnie te 10 nagłówków na poziomie `##`, w dokładnie tej kolej
 9. `## Non-Goals`
 10. `## Open Questions`
 
-**Brownfield (11 sekcji):**
+**Brownfield (11 sections):**
 
-Wygeneruj dokładnie te 11 nagłówków na poziomie `##`, w dokładnie tej kolejności:
+Emit exactly these 11 `##`-level headings, in this exact order:
 
-1. `## Current System Overview` — co istnieje teraz: kluczowa architektura, tech stack, baza użytkowników. Ta sekcja nie ma odpowiednika greenfield; ustanawia linię bazową, względem której wszystkie kolejne sekcje opisują zmiany.
-2. `## Problem Statement & Motivation` — co jest niepoprawne/brakuje, dlaczego teraz. Ujęte różnicowo: skupia się na luce między stanem obecnym a pożądanym.
-3. `## User & Persona` — kogo dotyczy (istniejący użytkownicy + nowi, jeśli są). Dla brownfield podkreśl istniejących użytkowników, których doświadczenie się zmienia.
-4. `## Success Criteria` (z `### Primary` / `### Secondary` / `### Guardrails`) — po czym wiemy, że zmiana zadziałała. Guardrails powinny jawnie obejmować istniejące zachowanie, które nie może ulec regresji.
-5. `## User Stories` — co zmienia się dla użytkownika. Ujęte różnicowo: Given/When/Then opisuje nowe zachowanie, z jawnymi uwagami o tym, co wcześniej było inne.
-6. `## Scope of Change` — co jest modyfikowane/dodawane/usuwane. Jawna różnica: sklasyfikuj każdy element jako `new`, `modified` lub `removed`. Zastępuje to domyślne założenie „wszystko jest nowe” z greenfield `## Functional Requirements`.
-7. `## Constraints & Compatibility` — kompatybilność wsteczna, migracja danych, istniejące integracje, zachowane zachowanie. Sekcja specyficzna dla brownfield, która czyni zachowanie jawnym.
-8. `## Business Logic Changes` — dodania/modyfikacje reguł domenowych (nie pełny model domenowy). Jeśli zmiana dotyczy wyłącznie infrastruktury (bez zmiany logiki domenowej), zaznacz to jawnie.
-9. `## Access Control Changes` — zmiany uprawnień, jeśli występują. Jeśli nie ma zmian, podaj: „No access control changes.”
-10. `## Non-Goals` — czego NIE zmieniamy. Kluczowe dla brownfield: jawnie wskazuje aspekty istniejącego systemu, które są poza zakresem.
+1. `## Current System Overview` — what exists now: key architecture, tech stack, user base. This section has no greenfield equivalent; it establishes the baseline that all subsequent sections describe changes against.
+2. `## Problem Statement & Motivation` — what's wrong/missing, why now. Delta-framed: focuses on the gap between current state and desired state.
+3. `## User & Persona` — who is affected (existing users + new if any). For brownfield, emphasize existing users whose experience changes.
+4. `## Success Criteria` (with `### Primary` / `### Secondary` / `### Guardrails`) — how we know the change worked. Guardrails should explicitly include existing behavior that must not regress.
+5. `## User Stories` — what changes for the user. Delta-framed: Given/When/Then describes the new behavior, with explicit notes on what was different before.
+6. `## Scope of Change` — what's being modified/added/removed. Explicit delta: categorize each item as `new`, `modified`, or `removed`. This replaces the implicit "everything is new" assumption of the greenfield `## Functional Requirements`.
+7. `## Constraints & Compatibility` — backward compatibility, data migration, existing integrations, preserved behavior. The brownfield-specific section that makes preservation explicit.
+8. `## Business Logic Changes` — domain rule additions/modifications (not full domain model). If the change is infrastructure-only (no domain logic change), state that explicitly.
+9. `## Access Control Changes` — permission changes if any. If no changes, state: "No access control changes."
+10. `## Non-Goals` — what we're NOT changing. Critical for brownfield: explicitly names existing system aspects that are out of scope.
 11. `## Open Questions`
 
-**NIE generuj** sekcji `## Data Model`, `## Data Model Changes`, `## Implementation Decisions`, `## Testing Strategy` ani `## Deployment & CI/CD` w żadnym trybie — te kwestie nie są częścią schematu PRD. Encje i ich cykle życia wynikają z FRs oraz User Stories i są ustalane podczas wyboru stacku / planowania implementacji, a nie w PRD. Jeśli notatki wejściowe zawierają treść modelu danych lub implementacji, podsumuj ją w komunikacie przekazania Kroku 5 pod „forward to technical-roadmap”, aby użytkownik wiedział, że jest kierowana dalej, a nie po cichu odrzucana — ale NIE generuj tych sekcji w PRD.
+**Do NOT emit** `## Data Model`, `## Data Model Changes`, `## Implementation Decisions`, `## Testing Strategy`, or `## Deployment & CI/CD` sections in either mode — those concerns are not part of the PRD schema. Entities and their lifecycles emerge from FRs and User Stories and are pinned during stack selection / implementation planning, not in PRD. If the input notes carry data-model or implementation content, summarize it into the Step 5 hand-off message under "forward to technical-roadmap" so the user knows it's being routed, not silently dropped — but DO NOT emit those sections in the PRD.
 
-#### Zasady zawartości sekcji (oba tryby)
+#### Section content rules (both modes)
 
-Dla każdej sekcji:
+For each section:
 
-- **Jeśli dane wejściowe mają pasującą treść** — przepisz ją wiernie do sekcji. Zachowaj sformułowania użytkownika. Konwertuj formatowanie tylko wtedy, gdy schemat wymaga określonego kształtu (np. format FR-NNN, Given/When/Then dla historyjek użytkownika, trzy podsekcje Success Criteria). Nie parafrazuj, nie podsumowuj ani nie „ulepszaj” słów użytkownika.
-- **Jeśli dane wejściowe mają częściową treść** — przepisz to, co jest, następnie zakończ `# TODO: <what's missing> — see Open Questions` wewnątrz sekcji i dodaj pasujący numerowany wpis w `## Open Questions`.
-- **Jeśli dane wejściowe nie mają pasującej treści** — wygeneruj tylko nagłówek oraz `# TODO: <section name> — see Open Questions`, a następnie dodaj pasujący numerowany wpis w `## Open Questions`.
+- **If the input has matching content** — transcribe it faithfully into the section. Preserve user wording. Convert formatting only when the schema demands a specific shape (e.g., FR-NNN format, Given/When/Then for user stories, three-subsection Success Criteria). Do not rephrase, summarize, or "improve" the user's words.
+- **If the input has partial content** — transcribe what's there, then close with `# TODO: <what's missing> — see Open Questions` inside the section, and add a matching numbered entry under `## Open Questions`.
+- **If the input has no matching content** — emit just the heading plus `# TODO: <section name> — see Open Questions`, and add a matching numbered entry under `## Open Questions`.
 
-Jeśli `/10x-shape` zapisał cytaty blokowe Socrates pod FRs, zachowaj je dosłownie — są nośne dla dalszego przeglądu.
+If `/10x-shape` recorded Socrates blockquotes under FRs, preserve them verbatim — they're load-bearing for downstream review.
 
-Jeśli shape-notes.md zawierał blok `## Quality cross-check` (z Kroku 7 `/10x-shape`), odzwierciedl każdą lukę w `## Open Questions` jako numerowany wpis wskazujący brakujący element i jego konsekwencję.
+If shape-notes.md carried a `## Quality cross-check` block (from Step 7 of `/10x-shape`), mirror each gap into `## Open Questions` as a numbered entry naming the missing element and its consequence.
 
-**Zasady treści specyficzne dla brownfield:**
+**Brownfield-specific content rules:**
 
-- FRs z `Change: preserved` stają się jawnymi elementami zachowania w `## Scope of Change`, a nie `## Non-Goals`.
-- `## Current System Overview` jest mapowane z sekcji `## Current System` w shape-notes.
-- `## Constraints & Compatibility` jest mapowane z sekcji `## Constraints & Preserved Behavior` w shape-notes.
-- Konwencja ujęcia różnicowego: sekcje opisują to, co się zmienia, a nie cały system. „The auth model adds Google OAuth alongside existing email login” — a nie „The system supports email login and Google OAuth.”
+- FRs with `Change: preserved` become explicit preservation items in `## Scope of Change`, not `## Non-Goals`.
+- `## Current System Overview` maps from shape-notes' `## Current System` section.
+- `## Constraints & Compatibility` maps from shape-notes' `## Constraints & Preserved Behavior` section.
+- Delta-framing convention: sections describe what changes, not the full system. "The auth model adds Google OAuth alongside existing email login" — not "The system supports email login and Google OAuth."
 
-**Twarda zasada — nigdy nie wymyślaj**: jeśli dane wejściowe nie zawierają jednolinijkowej reguły biznesowej, sekcja `## Business Logic` / `## Business Logic Changes` MUSI zawierać `# TODO: domain rule — see Open Questions`, a Open Questions MUSZĄ zawierać „What is the one-sentence business rule? — TBD by user. Block: yes (PRD is hollow until resolved).” Nie wpisuj zastępczej reguły. Nie „ekstrapoluj” reguły z nazw encji pojawiających się w FRs lub User Stories. Cały sens tej umiejętności polega na ujawnianiu luk, a nie ich maskowaniu.
+**Hard rule — never invent**: if the input does not contain a one-sentence business rule, the `## Business Logic` / `## Business Logic Changes` section MUST read `# TODO: domain rule — see Open Questions` and Open Questions MUST carry "What is the one-sentence business rule? — TBD by user. Block: yes (PRD is hollow until resolved)." Do not write a placeholder rule. Do not "extrapolate" a rule from entity nouns appearing in FRs or User Stories. The whole point of this skill is to surface gaps, not paper over them.
 
-Ta sama zasada dotyczy: kryteriów sukcesu, historyjek użytkownika, priorytetów FR, celów NFR, kontroli dostępu, non-goals. Jeśli czegoś nie ma w danych wejściowych, trafia to do Open Questions.
+Same rule applies to: success criteria, user stories, FR priorities, NFR targets, access control, non-goals. If it's not in the input, it goes to Open Questions.
 
-#### 3c. Autoprzegląd przed zapisem
+#### 3c. Pre-write self-review
 
-Przed jakimkolwiek zapisem na dysk wykonaj przejście autoprzeglądu względem listy wymaganych sekcji schematu ORAZ lint na poziomie treści pod kątem wycieku szczegółów technicznych:
+Before any disk write, run a self-review pass against the schema's required-sections list AND a content-level lint for technical leak:
 
-**Kontrole strukturalne:**
+**Structural checks:**
 
-1. Sparsuj zawartość PRD w pamięci. Wyodrębnij każdy nagłówek `## `.
-2. Porównaj z kanoniczną listą sekcji dla aktywnego `context_type` (10 dla greenfield, 11 dla brownfield). Zweryfikuj, że WSZYSTKIE sekcje są obecne, w kolejności, z dokładną pisownią. PRD NIE może zawierać `## Data Model` ani `## Data Model Changes` — te sekcje zostały wycofane.
-3. Zweryfikuj, że frontmatter deklaruje wszystkie wymagane klucze zgodnie ze schematem (`project`, `version`, `status`, `created`, `context_type`, `product_type`, `target_scale`, `timeline_budget`).
-4. Zweryfikuj, że `## Success Criteria` zawiera podsekcje `### Primary`, `### Secondary`, `### Guardrails` (lub, jeśli ich brakuje, że są oznaczone jako TODO z odpowiadającymi wpisami Open Questions).
+1. Parse the in-memory PRD content. Extract every `## ` heading.
+2. Compare to the canonical section list for the active `context_type` (10 for greenfield, 11 for brownfield). Verify ALL sections are present, in order, exact spelling. The PRD must NOT contain `## Data Model` or `## Data Model Changes` — those sections were retired.
+3. Verify the frontmatter declares all required keys per the schema (`project`, `version`, `status`, `created`, `context_type`, `product_type`, `target_scale`, `timeline_budget`).
+4. Verify `## Success Criteria` contains `### Primary`, `### Secondary`, `### Guardrails` subsections (or, if missing, that they're flagged as TODO with corresponding Open Questions entries).
 
-**Lint treści pod kątem wycieku technicznego:**
+**Content-level lint for technical leak:**
 
-5. Przeskanuj treści wszystkich sekcji na poziomie `##` (z wyłączeniem brownfield `## Current System Overview`, gdzie nazwanie istniejącego stacku jest dozwolone) pod kątem tokenów wskazujących, że szczegóły implementacyjne przeniknęły do PRD. Każde trafienie traktuj jako wyciek, chyba że jest częścią dosłownego cytatu użytkownika jawnie kierowanego do Open Questions:
+5. Scan all `##`-level section bodies (excluding brownfield `## Current System Overview`, where naming the existing stack is allowed) for tokens that indicate implementation detail has leaked into the PRD. Treat each hit as a leak unless it is part of a verbatim user quotation explicitly being routed to Open Questions:
 
-   - **Nazwy dostawców / usług hostowanych**: `OpenRouter`, `Stripe`, `Auth0`, `Supabase`, `Firebase`, `Vercel`, `Cloudflare`, `AWS`, `GCP`, `Azure`, `OpenAI`, `Anthropic` itd. (dowolny produkt/usługa będąca nazwą własną).
-   - **Notacja schematu / ORM**: `(FK)`, `nullable`, przyrostki kolumn `_hash`, `_at` przedstawione jako listy pól, `password_hash`, `cascade`, `soft-delete`, `hard-delete`, `migration`, `backfill`.
-   - **Lokalizacja wykonawcza**: `client-side`, `server-side`, `on the edge`, `in the cache`, `in the worker`.
-   - **Mechanizm egzekwowania**: `per IP`, `per user-agent`, `token bucket`, `rate-limit per <axis>`.
-   - **Element interfejsu** (gdy użyty do określenia NFR, a nie historyjki użytkownika): `spinner`, `progress bar`, `streaming response`, `modal`, `toast`.
-   - **Transport / protokół**: `WebSocket`, `gRPC`, `GraphQL`, `REST endpoint`, `webhook`, `SSE`.
-   - **Czasowniki implementacyjne w regułach domenowych**: „the LLM does X”, „the SRS library decides Y”, „the database stores Z” (nazwanie komponentu wykonującego regułę zamiast określenia samej reguły).
+   - **Vendor / hosted-service names**: `OpenRouter`, `Stripe`, `Auth0`, `Supabase`, `Firebase`, `Vercel`, `Cloudflare`, `AWS`, `GCP`, `Azure`, `OpenAI`, `Anthropic`, etc. (any proper-noun product/service).
+   - **Schema / ORM notation**: `(FK)`, `nullable`, `_hash`, `_at` column suffixes presented as field lists, `password_hash`, `cascade`, `soft-delete`, `hard-delete`, `migration`, `backfill`.
+   - **Runtime location**: `client-side`, `server-side`, `on the edge`, `in the cache`, `in the worker`.
+   - **Enforcement mechanism**: `per IP`, `per user-agent`, `token bucket`, `rate-limit per <axis>`.
+   - **UI affordance** (when used to state an NFR, not a user story): `spinner`, `progress bar`, `streaming response`, `modal`, `toast`.
+   - **Transport / protocol**: `WebSocket`, `gRPC`, `GraphQL`, `REST endpoint`, `webhook`, `SSE`.
+   - **Implementation verbs in domain rules**: "the LLM does X", "the SRS library decides Y", "the database stores Z" (naming the component performing the rule, rather than stating the rule).
 
-   Dla każdego trafienia wygeneruj ustrukturyzowane ostrzeżenie. NIE przepisuj po cichu — przerwij zapis, aby użytkownik mógł zobaczyć, co wyciekło.
+   For each hit, emit a structured warning. Do NOT silently rewrite — abort the write so the user can see what leaked.
 
-Jeśli którakolwiek kontrola strukturalna LUB lint nie powiedzie się, **przerwij zapis** i zgłoś:
+If any structural OR lint check fails, **abort the write** and report:
 
 ```
 PRD generation self-review FAILED:
@@ -273,35 +274,35 @@ properties / scope decisions and re-run, or (b) move the leaked content into
 shape-notes' `## Forward: ...` blocks so a downstream skill consumes it.
 ```
 
-Następnie ZATRZYMAJ SIĘ. Nie przechodź do Kroku 4.
+Then STOP. Do not proceed to Step 4.
 
-Jeśli wszystkie kontrole przejdą pomyślnie, przejdź do Kroku 4 ze zweryfikowaną zawartością.
+If all checks pass, proceed to Step 4 with the validated content in hand.
 
-### Krok 4: Sprawdzenie kolizji
+### Step 4: Collision check
 
 ```bash
 test -f context/foundation/prd.md
 ```
 
-Jeśli plik nie istnieje, zapisz do `context/foundation/prd.md` i przejdź do Kroku 5.
+If the file does not exist, write to `context/foundation/prd.md` and proceed to Step 5.
 
-Jeśli plik istnieje, zapytaj użytkownika:
+If the file exists, ask the user:
 
-**Kolizja** context/foundation/prd.md już istnieje. Jak chcesz kontynuować?
+**Collision** context/foundation/prd.md already exists. How would you like to proceed?
 
-- **Zapisz jako prd-vN.md (Zalecane)**: Zachowaj historię. Nowy PRD trafi do następnego dostępnego slotu prd-vN.md. Niewersjonowany prd.md pozostanie bez zmian.
-- **Nadpisz prd.md**: Zastąp istniejący prd.md. Poprzednia wersja zostanie utracona (chyba że została zatwierdzona).
-- **Przerwij**: Zakończ bez zapisów. Bez rozstrzygnięcia kolizji.
+- **Save as prd-vN.md (Recommended)**: Preserve history. The new PRD lands at the next available prd-vN.md slot. The unversioned prd.md is unchanged.
+- **Overwrite prd.md**: Replace the existing prd.md. The prior version is lost (unless you've committed it).
+- **Abort**: Exit without writes. No collision resolution.
 
-Po wybraniu „Zapisz jako prd-vN.md”: wybierz `N`, skanując `context/foundation/` w poszukiwaniu plików pasujących do `prd-v*.md`. Traktuj niewersjonowany `prd.md` jako v1. Następny slot to `N = (max existing N or 1) + 1`. Zapisz zweryfikowaną zawartość do `context/foundation/prd-v<N>.md` i zwiększ pole frontmatter `version:` w treści do `<N>`. Przejdź do Kroku 5.
+On "Save as prd-vN.md": pick `N` by scanning `context/foundation/` for files matching `prd-v*.md`. Treat the unversioned `prd.md` as v1. The next slot is `N = (max existing N or 1) + 1`. Write the validated content to `context/foundation/prd-v<N>.md` and bump the in-content `version:` frontmatter field to `<N>`. Proceed to Step 5.
 
-Po wybraniu „Nadpisz prd.md”: zapisz zweryfikowaną zawartość do `context/foundation/prd.md`. Zachowaj `version: 1` (nadpisanie jest zastąpieniem, a nie nową wersją). Przejdź do Kroku 5.
+On "Overwrite prd.md": write the validated content to `context/foundation/prd.md`. Keep `version: 1` (overwriting is a replacement, not a new version). Proceed to Step 5.
 
-Po wybraniu „Przerwij”: ZATRZYMAJ SIĘ bez zapisów.
+On "Abort": STOP without writes.
 
-### Krok 5: Przekazanie dalej
+### Step 5: Hand off
 
-Po zapisaniu podsumuj, co zostało utworzone:
+After the write lands, summarize what was produced:
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -324,7 +325,7 @@ Po zapisaniu podsumuj, co zostało utworzone:
 ═══════════════════════════════════════════════════════════
 ```
 
-Następnie skopiuj polecenie kolejnego kroku do schowka i ogłoś:
+Then copy the next-step command to clipboard and announce:
 
 **Greenfield:**
 
@@ -369,46 +370,46 @@ Set-Clipboard "/10x-stack-assess"
           assess WHETHER your existing system is ready.
 ```
 
-Jeśli notatki wejściowe zawierały przyszłościowe kwestie (preferencje tech-stack, notatki implementacyjne, wskazówki wdrożeniowe), wymień je krótko, aby użytkownik wiedział, że są kierowane do następnego kroku, a nie odrzucane:
+If the input notes carried forward-looking concerns (tech-stack preferences, implementation notes, deploy hints), list them briefly so the user knows they're being routed to the next step, not dropped:
 
 ```
   Forward to next step (not in PRD):
     • [one-line summary per detected item]
 ```
 
-Pomiń cały blok, jeśli dane wejściowe nie zawierały żadnych z tych elementów.
+Skip the block entirely if the input didn't carry any of those.
 
-ZATRZYMAJ SIĘ. Nie łącz automatycznie z inną umiejętnością.
+STOP. Do not chain into another skill automatically.
 
-## Krytyczne zabezpieczenia
+## Critical guardrails
 
-1. **Generator, nie autor.** Ta umiejętność zapisuje całe pliki z danych wejściowych już zatwierdzonych przez użytkownika. Nie wymyśla logiki biznesowej, kryteriów sukcesu, historyjek użytkownika ani priorytetów FR. Brakująca treść trafia dosłownie do `## Open Questions`. Sekcja `## Business Logic` PRD jest obszarem najbardziej rygorystycznie kontrolowanym: jeśli w danych wejściowych nie ma jednolinijkowej reguły, sekcja zawiera `# TODO: domain rule — see Open Questions`. Bez wyjątków.
+1. **Generator, not author.** This skill writes whole files from inputs the user has already approved. It does not invent business logic, success criteria, user stories, or FR priorities. Missing content goes to `## Open Questions` verbatim. The PRD's `## Business Logic` section is the single most-policed area: if there is no one-sentence rule in the input, the section reads `# TODO: domain rule — see Open Questions`. No exceptions.
 
-2. **Schemat jest kontraktem.** `../10x-shape/references/prd-schema.md` definiuje klucze frontmatter, nazwy sekcji i kolejność sekcji. Czytaj go ponownie przy każdym wywołaniu. Ponownie waliduj PRD w pamięci względem niego w Kroku 3c przed zapisem. Dryf między tą umiejętnością a schematem jest trybem awarii, któremu ta umiejętność ma zapobiegać.
+2. **Schema is the contract.** `../10x-shape/references/prd-schema.md` defines frontmatter keys, section names, and section order. Re-read it at every invocation. Re-validate the in-memory PRD against it in Step 3c before writing. Drift between this skill and the schema is the failure mode this skill exists to prevent.
 
-3. **Otwartość stacku jest wiążąca — i szersza niż same nazwy stacku.** Zabronione słownictwo w wygenerowanym PRD obejmuje siedem kategorii, nie tylko frameworki:
+3. **Stack openness is binding — and broader than just stack names.** The forbidden vocabulary in a generated PRD covers seven categories, not just frameworks:
 
-   - **Frameworki, bazy danych, platformy hostingowe, konkretne biblioteki** — pierwotna zasada.
-   - **Nazwy dostawców / usług hostowanych** — OpenRouter, Stripe, Auth0, Supabase, Firebase, Vercel, Cloudflare, AWS/GCP/Azure, OpenAI, Anthropic i każdy inny produkt lub usługa będąca nazwą własną.
-   - **Notacja schematu / ORM** — listy na poziomie pól, `(FK)`, `nullable`, kolumny `_hash`, `password_hash`, `cascade-delete`, `soft-delete`, `hard-delete`, `migration`, `backfill`. (Encje pojawiają się naturalnie w FRs i User Stories; schemat na poziomie kolumn jest kwestią dalszego etapu.)
-   - **Lokalizacja wykonawcza** — `client-side`, `server-side`, `on the edge`, `in the cache`, `in the worker`. PRD opisuje, co musi być prawdą na zewnętrznej granicy produktu, a nie gdzie w stacku jest to egzekwowane.
-   - **Mechanizm egzekwowania** — `per IP`, `per user-agent`, `token bucket`, `rate-limit per <axis>`. NFR jest właściwością; mechanizm to decyzja projektowa dalszego etapu.
-   - **Element interfejsu w NFRs** — `spinner`, `progress bar`, `streaming response`, `modal`, `toast`. NFRs określają jakość obserwowalną dla użytkownika (np. „continuous feedback during long operations”); element interfejsu jest kwestią dalszego etapu.
-   - **Transport / protokół** — `WebSocket`, `gRPC`, `GraphQL`, `REST endpoint`, `webhook`, `SSE`. PRD opisuje przepływ informacji tak, jak doświadcza go użytkownik, a nie format transmisji.
+   - **Frameworks, databases, hosting platforms, specific libraries** — the original rule.
+   - **Vendor / hosted-service names** — OpenRouter, Stripe, Auth0, Supabase, Firebase, Vercel, Cloudflare, AWS/GCP/Azure, OpenAI, Anthropic, and any other proper-noun product or service.
+   - **Schema / ORM notation** — field-level lists, `(FK)`, `nullable`, `_hash` columns, `password_hash`, `cascade-delete`, `soft-delete`, `hard-delete`, `migration`, `backfill`. (Entities surface naturally in FRs and User Stories; column-level schema is a downstream concern.)
+   - **Runtime location** — `client-side`, `server-side`, `on the edge`, `in the cache`, `in the worker`. The PRD describes what must be true at the product's outer boundary, not where in the stack it's enforced.
+   - **Enforcement mechanism** — `per IP`, `per user-agent`, `token bucket`, `rate-limit per <axis>`. The NFR is the property; the mechanism is a downstream design choice.
+   - **UI affordance in NFRs** — `spinner`, `progress bar`, `streaming response`, `modal`, `toast`. NFRs name the user-observable quality (e.g. "continuous feedback during long operations"); the affordance is downstream.
+   - **Transport / protocol** — `WebSocket`, `gRPC`, `GraphQL`, `REST endpoint`, `webhook`, `SSE`. The PRD describes information flow as the user experiences it, not the wire format.
 
-   Frontmatter PRD dotyczy wyłącznie poziomu produktu (`product_type`, `target_scale`, `timeline_budget` + metadane); rodzina języków, frameworki, wdrożenie, profil zespołu i wszelkie listy technologii do uniknięcia należą do dalszego kroku (tech-stack-selector dla greenfield, stack-assess dla brownfield), a NIE do PRD. Jeśli dane wejściowe zawierają zabronione słownictwo, pozostaw je w blokach `## Forward: ...` shape-notes do wykorzystania przez dalszy etap — NIE przenoś go do frontmatter ani sekcji PRD. Wyjątek: brownfield `## Current System Overview` może wymieniać istniejący stack i dostawców, ponieważ opisuje stan obecny, a nie wybór stacku. Lint treści Kroku 3c egzekwuje to zabezpieczenie mechanicznie.
+   PRD frontmatter is product-level only (`product_type`, `target_scale`, `timeline_budget` + metadata); language family, frameworks, deployment, team profile, and any technology avoid-list belong to the downstream step (tech-stack-selector for greenfield, stack-assess for brownfield), NOT PRD. If the input contains forbidden vocabulary, leave it in shape-notes' `## Forward: ...` blocks for the downstream step to consume — do NOT translate it into PRD frontmatter or sections. Exception: brownfield `## Current System Overview` may name the existing stack and vendors since it describes the current state, not a stack choice. Step 3c's content lint enforces this guardrail mechanically.
 
-4. **Kolizje sprzyjają historii.** Monit o kolizji zaleca zapis wersjonowany (`prd-vN.md`) zamiast nadpisania. Utracone wcześniejsze wersje są nieodwracalnym trybem awarii; zduplikowany plik w `context/foundation/` nie jest.
+4. **Collisions favor history.** The collision prompt recommends versioned save (`prd-vN.md`) over overwrite. Lost prior versions are an unrecoverable failure mode; a duplicate file in `context/foundation/` is not.
 
-5. **Autoprzegląd przerywa przy dryfie.** Jeśli PRD w pamięci nie ma sekcji, ma sekcję w złej kolejności lub brakuje w nim klucza frontmatter, zapis jest PRZERYWANY — a nie po cichu naprawiany. Błąd wskazuje konkretny dryf, aby opiekun mógł uzgodnić schemat i umiejętność.
+5. **Self-review aborts on drift.** If the in-memory PRD is missing a section, has a misordered section, or lacks a frontmatter key, the write is ABORTED — not patched up silently. The error names the specific drift so a maintainer can reconcile schema and skill.
 
-6. **Wyłącznie uniwersalny język.** Żadnych odniesień do 10xDevs / cohort / certification w jakichkolwiek danych wyjściowych widocznych dla użytkownika ani artefaktach zapisywanych na dysk. Ta umiejętność jest ogólnym generatorem PRD.
+6. **Universal language only.** No 10xDevs / cohort / certification references in any user-facing output or any artifact written to disk. The skill is a generic PRD generator.
 
-7. **Nigdy nie łącz automatycznie.** Przekazanie jest ogłoszeniem, a nie wywołaniem. Użytkownik wybiera, kiedy (i czy) uruchomić następny krok (10x-tech-stack-selector dla greenfield, 10x-stack-assess dla brownfield). Automatyczne łączenie pominęłoby przegląd wygenerowanego PRD przez człowieka.
+7. **Never chain automatically.** The hand-off is an announcement, not an invocation. The user picks when (and whether) to run the next step (10x-tech-stack-selector for greenfield, 10x-stack-assess for brownfield). Auto-chaining would skip the human's review of the generated PRD.
 
-## Uwagi
+## Notes
 
-- To jest umiejętność **generatora dokumentów**. Wynikiem jest `context/foundation/prd.md` (lub `prd-vN.md`), kropka.
-- Referencja schematu (`../10x-shape/references/prd-schema.md`) jest jedynym źródłem prawdy. Każda nazwa pola, nazwa sekcji lub klucz frontmatter wspomniany w tym tekście MUSI istnieć w dokumencie schematu — jeśli nie istnieje, najpierw popraw dokument schematu.
-- Heurystyka ubogich danych wejściowych (Krok 2) jest celowo konserwatywna. Fałszywie pozytywne wyniki (ostrzeżenie dla ukształtowanych danych wejściowych) można naprawić przez nadpisanie „Proceed anyway”; fałszywie negatywne wyniki (ciche generowanie z ubogich danych wejściowych) tworzą puste PRD, które wprowadzają użytkownika w błąd. Dostrajać heurystykę w stronę częstszych, a nie rzadszych ostrzeżeń.
-- Wzorzec `# TODO: <field-name> — see Open Questions` jest nośny. Narzędzia dalszych etapów (umiejętności przeglądu, 10x-tech-stack-selector / 10x-stack-assess) mogą użyć grep dla `^# TODO: `, aby policzyć nierozstrzygnięte luki i zdecydować, czy PRD jest gotowy do przeglądu.
+- This is a **document generator** skill. Output is `context/foundation/prd.md` (or `prd-vN.md`), period.
+- The schema reference (`../10x-shape/references/prd-schema.md`) is the single source of truth. Any field name, section name, or frontmatter key referenced in this body MUST exist in the schema doc — if it doesn't, fix the schema doc first.
+- The thin-input heuristic (Step 2) is intentionally conservative. False positives (warning on shaped input) are recoverable via the "Proceed anyway" override; false negatives (silently generating from thin input) produce hollow PRDs that mislead the user. Tune the heuristic toward warning more, not less.
+- The `# TODO: <field-name> — see Open Questions` pattern is load-bearing. Downstream tooling (review skills, 10x-tech-stack-selector / 10x-stack-assess) can grep for `^# TODO: ` to count unresolved gaps and decide whether the PRD is review-ready.
