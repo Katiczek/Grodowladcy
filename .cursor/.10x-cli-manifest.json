@@ -2,7 +2,7 @@
   "package": "@przeprogramowani/10x-cli",
   "version": "1.25.2",
   "manifestVersion": 3,
-  "lastApplied": "2026-10-11T21:55:46.080Z",
+  "lastApplied": "2026-10-18T09:58:05.128Z",
   "lessonId": "m2l2",
   "course": "10xdevs4",
   "tool": "cursor",
@@ -162,8 +162,8 @@
           "references/milestone-state.md"
         ],
         "contentHashes": {
-          "SKILL.md": "6c76e2598255dcd9237b58bf599b329e61b40b9ce8b329e9609a8ebbfb15619d",
-          "references/milestone-state.md": "d9446372acbab5617de079c5ee1e1d4a17fb3329e7bcc1a0129d3ee894fe0a2b"
+          "SKILL.md": "630c110e1c47b9cd90bb88e3167b79ef6d499eeff0985c10d644cefb09d463fe",
+          "references/milestone-state.md": "b81b5f8178d71f63338e67a07e1fd1fa09036f25dbfc2a37e52fed6366a7039d"
         }
       },
       "10x-new": {
@@ -188,7 +188,7 @@
           "scripts/metadata-guard.test.mjs"
         ],
         "contentHashes": {
-          "SKILL.md": "d54c731d0cc39d0940ddce41a205148596cbce98db56beefe4b53a68da77a730",
+          "SKILL.md": "714c526c53961fe412d711fc9bdc181b3865da4b1bb9e810a8812a56e7a933d2",
           "references/plan-persistence.md": "976983f7c60a04e35ee4fb2abf8583206e2afb59703a6829436933a24651e7af",
           "references/plan-templates.md": "6d2c6b4a4dd80b9d97f78996e12b85c0efa83361ee048fba5553cfdc4754ccb1",
           "references/progress-format.md": "01259753af620e2bfcaa04fb34d732d2efcb6fc172f8cf062f24870fe2248642",
@@ -215,7 +215,7 @@
           "references/progress-format.md"
         ],
         "contentHashes": {
-          "SKILL.md": "cc4267e3d2dfce5624b5c2a80bc53aa76f85eabef599bb83b89516d585f9cdc6",
+          "SKILL.md": "e6ace1b3ef695e30b7d2e8168c5138c4a0ada35ede44bcca9070295857e3b915",
           "references/implementation-discipline.md": "c31109ad88464d8819aa36b226ddfc42aa3028247115fbdaad1144ab94dc3018",
           "references/progress-format.md": "01259753af620e2bfcaa04fb34d732d2efcb6fc172f8cf062f24870fe2248642"
         }
@@ -226,8 +226,8 @@
           "references/archive-sha.md"
         ],
         "contentHashes": {
-          "SKILL.md": "8979d97db603e83986c5323b39d27a91710cf5828e1c481f5435f8fdeacfcde0",
-          "references/archive-sha.md": "3f0f6bb319b1521fbe735ca84b1241b57e89074e93f35bbd77539bb0c31a8ca2"
+          "SKILL.md": "e061f76dc6a4217a33236df02e61b2a1f74e71f6c591177abec20731a8410603",
+          "references/archive-sha.md": "771b29797985b826d78e379bf9c8a5e33b860d5ea356567e8e86e0a04c37352b"
         }
       },
       "10x-status": {
@@ -437,7 +437,7 @@
       "installedManifestHash": "435038f6a11d77a290a66c602b41b5a174750691d0f8249f282a4f843d5e255a"
     },
     "m2l2": {
-      "appliedAt": "2026-10-11T21:55:46.080Z",
+      "appliedAt": "2026-10-18T09:58:05.128Z",
       "skills": {
         "10x-idea-check": {
           "files": [
@@ -589,8 +589,8 @@
         "courseRules": true,
         "rules": true
       },
-      "installedReleaseId": "r-46042df8c5bf0889600972bbf020ca32aafa72c844b5e196533afbc6a496c215",
-      "installedManifestHash": "435038f6a11d77a290a66c602b41b5a174750691d0f8249f282a4f843d5e255a"
+      "installedReleaseId": "r-5a881691e49bc76caa8246859885fd0f6213df0a3841d25e221fa9294a2b4673",
+      "installedManifestHash": "11d85eaf9ca2fe01249cc24a43f5b6aca196b16fb79576a3d3a29bc08ba9863d"
     }
   },
   "managedRules": {
@@ -600,7 +600,7 @@
     "upstreamHash": "7f81548eb0beaec80d61a0a43b86031a00644294afb519d00abc502aece8cb29"
   },
   "toolkit": {
-    "version": "v2.59.3",
-    "recordedAt": "2026-10-11T21:55:46.168Z"
+    "version": "v2.60.3",
+    "recordedAt": "2026-10-18T09:58:05.217Z"
   }
 }

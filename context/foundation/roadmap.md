@@ -3,7 +3,7 @@ project: "Grodowładcy"
 version: 1
 status: draft
 created: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-18
 prd_version: 1
 main_goal: learn
 top_blocker: capacity
@@ -41,7 +41,7 @@ Krótka, lokalna gra na telefony dla Magdy i stałej paczki przyjaciół: wspól
 
 | ID   | Change ID                     | Outcome (user can …)                                                                                                      | Prerequisites | PRD refs                         | Status   |
 | ---- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
-| S-07 | show-main-menu                | gracz może zobaczyć menu główne z przyciskami „New game” i „Continue”                                                     | —             | US-01, FR-001, FR-002            | ready    |
+| S-07 | show-main-menu                | gracz może zobaczyć menu główne z przyciskami „New game” i „Continue”                                                     | —             | US-01, FR-001, FR-002            | planning |
 | S-01 | start-on-visible-map          | gracz może po „New game” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych          | S-07          | US-01, FR-001, FR-008            | proposed |
 | S-02 | plan-subject-action           | gracz może wybrać sąsiednie pole i zaplanować zajęcie, farmę albo dom, a potem zakończyć fazę poddanych                  | S-01          | US-01, FR-003, FR-004, FR-005    | proposed |
 | S-03 | post-hero-announcement        | gracz może przejrzeć trzech bohaterów i wystawić ogłoszenie z polem oraz nagrodą w monetach                              | S-02          | US-01, FR-005, FR-006, FR-007    | blocked  |
@@ -86,7 +86,7 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Plasterek to tylko te dwa przyciski. „New game” nie buduje mapy — to zostaje w S-01. „Continue” bez zapisu nie otwiera sesji — wczytanie zostaje w S-06. Inaczej ten plasterek połknąłby i planszę, i zapis. Na ekranie drugi przycisk brzmi „Continue”; FR-002 nadal nazywa tę akcję wczytaniem autosave.
-- **Status:** ready
+- **Status:** planning
 
 ### S-01: Widoczna plansza nowej gry
 
