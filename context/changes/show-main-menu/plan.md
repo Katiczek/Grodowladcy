@@ -245,18 +245,18 @@ No player save exists yet, so there is nothing to migrate. The board scene moves
 
 #### Automated
 
-- [x] 2.1 Assets/Scenes/MapView.unity exists, and the MapView meta guid is 8c9cfa26abfee488c85f1582747f6a02
-- [x] 2.2 EditorBuildSettings and the Android build profile list MainMenu at index 0 and MapView at index 1
-- [x] 2.3 EditMode tests pass via Unity Test Runner
+- [x] 2.1 Assets/Scenes/MapView.unity exists, and the MapView meta guid is 8c9cfa26abfee488c85f1582747f6a02 — ff7bd4c
+- [x] 2.2 EditorBuildSettings and the Android build profile list MainMenu at index 0 and MapView at index 1 — ff7bd4c
+- [x] 2.3 EditMode tests pass via Unity Test Runner — ff7bd4c
 
 #### Manual
 
-- [x] 2.4 Pressing Nowa rozgrywka loads MapView
-- [x] 2.5 MapView still shows only the camera, the 2D light, and the field sprite, with no menu and no return control
+- [x] 2.4 Pressing Nowa rozgrywka loads MapView — ff7bd4c
+- [x] 2.5 MapView still shows only the camera, the 2D light, and the field sprite, with no menu and no return control — ff7bd4c
 
 ### Phase 3: Align menu labels
 
 #### Automated
 
-- [ ] 3.1 context/foundation/prd.md primary success criterion and FR-002 offer Nowa rozgrywka and Wznów, and the menu sentence no longer offers Nowa gra or Wczytaj autosave
-- [ ] 3.2 context/foundation/roadmap.md names the S-07, S-01, and S-06 buttons as Nowa rozgrywka and Wznów, and those slice outcomes no longer say New game or Continue
+- [x] 3.1 context/foundation/prd.md primary success criterion and FR-002 offer Nowa rozgrywka and Wznów, and the menu sentence no longer offers Nowa gra or Wczytaj autosave
+- [x] 3.2 context/foundation/roadmap.md names the S-07, S-01, and S-06 buttons as Nowa rozgrywka and Wznów, and those slice outcomes no longer say New game or Continue

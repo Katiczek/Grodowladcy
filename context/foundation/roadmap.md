@@ -22,7 +22,7 @@ milestone_status: open
 
 **M-1: Pierwsza grywalna tura** — Status: open
 
-- **Intent:** Gracz jednoosobowy zaczyna z menu głównego („New game” albo „Continue”), kończy jedną turę na ustalonej mapie — od poddanych, przez ogłoszenie, do przyjęcia albo odmowy i wyniku misji — a potem może wrócić do zapisanej sesji i grać dalej aż do wygranej sławą. Kamień milowy dowozi sesję z głównych kryteriów sukcesu; drugi gracz zostaje poza nim.
+- **Intent:** Gracz jednoosobowy zaczyna z menu głównego („Nowa rozgrywka” albo „Wznów”), kończy jedną turę na ustalonej mapie — od poddanych, przez ogłoszenie, do przyjęcia albo odmowy i wyniku misji — a potem może wrócić do zapisanej sesji i grać dalej aż do wygranej sławą. Kamień milowy dowozi sesję z głównych kryteriów sukcesu; drugi gracz zostaje poza nim.
 - **Source materials:** `context/foundation/prd.md` (v1)
 - **Done when:** gotowe, gdy każdy S-NN poniżej ma status `done`.
 - **Scope anchors:** FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-014, US-01
@@ -41,13 +41,13 @@ Krótka, lokalna gra na telefony dla Magdy i stałej paczki przyjaciół: wspól
 
 | ID   | Change ID                     | Outcome (user can …)                                                                                                      | Prerequisites | PRD refs                         | Status   |
 | ---- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
-| S-07 | show-main-menu                | gracz może zobaczyć menu główne z przyciskami „New game” i „Continue”                                                     | —             | US-01, FR-001, FR-002            | planning |
-| S-01 | start-on-visible-map          | gracz może po „New game” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych          | S-07          | US-01, FR-001, FR-008            | proposed |
+| S-07 | show-main-menu                | gracz może zobaczyć menu główne z przyciskami „Nowa rozgrywka” i „Wznów”                                                     | —             | US-01, FR-001, FR-002            | in-progress |
+| S-01 | start-on-visible-map          | gracz może po „Nowa rozgrywka” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych          | S-07          | US-01, FR-001, FR-008            | proposed |
 | S-02 | plan-subject-action           | gracz może wybrać sąsiednie pole i zaplanować zajęcie, farmę albo dom, a potem zakończyć fazę poddanych                  | S-01          | US-01, FR-003, FR-004, FR-005    | proposed |
 | S-03 | post-hero-announcement        | gracz może przejrzeć trzech bohaterów i wystawić ogłoszenie z polem oraz nagrodą w monetach                              | S-02          | US-01, FR-005, FR-006, FR-007    | blocked  |
 | S-04 | resolve-first-turn            | gracz może zakończyć turę i zobaczyć, czy bohater przyjął zlecenie oraz czy misja się udała, razem ze skutkiem planów poddanych | S-03          | US-01, FR-005, FR-014            | blocked  |
 | S-05 | repeat-turns-until-fame-win   | gracz może powtarzać tury i wygrać, gdy sława osiągnie próg                                                              | S-04          | US-01, FR-005                    | proposed |
-| S-06 | load-phase-one-autosave       | gracz może wyjść z sesji i wrócić do niej przyciskiem „Continue”                                                          | S-07, S-01    | US-01, FR-002                    | proposed |
+| S-06 | load-phase-one-autosave       | gracz może wyjść z sesji i wrócić do niej przyciskiem „Wznów”                                                          | S-07, S-01    | US-01, FR-002                    | proposed |
 
 ## Streams
 
@@ -56,7 +56,7 @@ Pomoc przy czytaniu: grupuje plasterki o wspólnym łańcuchu zależności. Kole
 | Stream | Theme            | Chain                                              | Note                                                                                          |
 | ------ | ---------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | A      | Pętla tury       | `S-07` → `S-01` → `S-02` → `S-03` → `S-04` → `S-05` | Nauka: najpierw menu, potem widoczna plansza, potem pierwsza domknięta tura, a wygrana sławą dopiero za nią. |
-| B      | Powrót do sesji  | `S-06`                                             | Dołącza przy `S-07` (przycisk Continue) i przy `S-01` (sesja do zapisania); może iść obok `S-02`. |
+| B      | Powrót do sesji  | `S-06`                                             | Dołącza przy `S-07` (przycisk Wznów) i przy `S-01` (sesja do zapisania); może iść obok `S-02`. |
 
 ## Baseline
 
@@ -78,19 +78,19 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 
 ### S-07: Main menu
 
-- **Outcome:** gracz może zobaczyć menu główne z przyciskami „New game” i „Continue”
+- **Outcome:** gracz może zobaczyć menu główne z przyciskami „Nowa rozgrywka” i „Wznów”
 - **Change ID:** show-main-menu
 - **PRD refs:** US-01, FR-001, FR-002
 - **Prerequisites:** —
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:** —
-- **Risk:** Plasterek to tylko te dwa przyciski. „New game” nie buduje mapy — to zostaje w S-01. „Continue” bez zapisu nie otwiera sesji — wczytanie zostaje w S-06. Inaczej ten plasterek połknąłby i planszę, i zapis. Na ekranie drugi przycisk brzmi „Continue”; FR-002 nadal nazywa tę akcję wczytaniem autosave.
-- **Status:** planning
+- **Risk:** Plasterek to tylko te dwa przyciski. „Nowa rozgrywka” nie buduje mapy — to zostaje w S-01. „Wznów” bez zapisu nie otwiera sesji — wczytanie zostaje w S-06. Inaczej ten plasterek połknąłby i planszę, i zapis. Na ekranie i w FR-002 drugi przycisk brzmi „Wznów”.
+- **Status:** in-progress
 
 ### S-01: Widoczna plansza nowej gry
 
-- **Outcome:** gracz może po „New game” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych
+- **Outcome:** gracz może po „Nowa rozgrywka” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych
 - **Change ID:** start-on-visible-map
 - **PRD refs:** US-01, FR-001, FR-008
 - **Prerequisites:** S-07
@@ -153,14 +153,14 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 
 ### S-06: Wczytanie zapisanej sesji
 
-- **Outcome:** gracz może wyjść z sesji i wrócić do niej przyciskiem „Continue”
+- **Outcome:** gracz może wyjść z sesji i wrócić do niej przyciskiem „Wznów”
 - **Change ID:** load-phase-one-autosave
 - **PRD refs:** US-01, FR-002
 - **Prerequisites:** S-07, S-01
 - **Parallel with:** S-02
 - **Blockers:** —
 - **Unknowns:** —
-- **Risk:** Zapis potrzebuje tylko rozpoczętej sesji, więc może iść obok fazy poddanych. Przycisk „Continue” jest już na menu z S-07; ten plasterek sprawia, że wczytuje autozapis z początku fazy pierwszej. Przy małej liczbie godzin nie wyprzedza pierwszej grywalnej tury.
+- **Risk:** Zapis potrzebuje tylko rozpoczętej sesji, więc może iść obok fazy poddanych. Przycisk „Wznów” jest już na menu z S-07; ten plasterek sprawia, że wczytuje autozapis z początku fazy pierwszej. Przy małej liczbie godzin nie wyprzedza pierwszej grywalnej tury.
 - **Status:** proposed
 
 ## Backlog Handoff

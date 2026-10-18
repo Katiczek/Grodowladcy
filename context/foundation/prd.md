@@ -33,7 +33,7 @@ Primary persona: Magda i stała paczka przyjaciół — jednocześnie współtw�
 
 Gracz jednoosobowy może ukończyć pełną sesję:
 
-1. Menu główne → „Nowa gra” lub „Wczytaj autosave” (jeden lokalny profil). Autosave zapisywany do pliku na początku fazy pierwszej. Start: **10 monet, 0 sławy, 3 wiernych poddanych**.
+1. Menu główne → „Nowa rozgrywka” lub „Wznów” (jeden lokalny profil). Autosave zapisywany do pliku na początku fazy pierwszej. Start: **10 monet, 0 sławy, 3 wiernych poddanych**.
 2. Faza Wierni poddani: mapa hex; wydawanie puli poddanych na sąsiednie pola — zajmij puste / zbuduj farmę (**koszt 3, +2 monety/turę**) / zbuduj dom (**koszt 4, +1 do puli poddanych**); „Zakończ fazę”.
 3. Faza Najmij bohatera: **3 bohaterów w puli, nowa pula co turę**; lista ze statystykami; wystawienie ogłoszenia — gracz wybiera pole i nagrodę X monet; typ zadania wynika automatycznie z typu pola (potwór → zabij, wieś → przejmij, własne → broń). Ukryty krok przydziału: oferta monet vs ukryty próg monet bohatera → przyjęte lub zignorowane.
 4. Faza Rozwiązanie: realizacja zaplanowanych akcji (zajęcia, budynki, misje). Dla przyjętych zleceń gra rozstrzyga sukces/porażkę na podstawie siły bohatera vs siły wroga (**potwór 5 · wieś 3 · obrona własnego pola 2**). Sukces: potwór **+3 sławy** · wieś **+5 monet** (jednorazowo) · obrona **+1 sława**. Porażka: „Bohater poległ w zadaniu”.
@@ -94,7 +94,7 @@ W kolejności preferencji (po Primary):
 
 - FR-001: Player can start a new game. Priority: must-have
   > Socrates: No counter-argument; it stands as written.
-- FR-002: Player can load the autosave; the game autosaves to a file at the start of phase 1; menu offers "Nowa gra" or "Wczytaj autosave". Priority: must-have
+- FR-002: Player can load the autosave; the game autosaves to a file at the start of phase 1; menu offers "Nowa rozgrywka" or "Wznów". Priority: must-have
   > Socrates: Counter-argument considered: persistence shape unclear. Resolution: changed — explicit autosave-at-phase-1 + load autosave (not vague "last game").
 
 ### Map & loyal subjects
