@@ -232,14 +232,14 @@ No player save exists yet, so there is nothing to migrate. The board scene moves
 
 #### Automated
 
-- [ ] 1.1 Presentation asmdef exists at Assets/Scripts/Presentation/Grodowladcy.Presentation.asmdef, references UnityEngine.UI, and does not reference Grodowladcy.Runtime or set noEngineReferences
-- [ ] 1.2 Main menu scene and controller contain the literals Nowa rozgrywka, Wznów, and Brak zapisu do wznowienia.
-- [ ] 1.3 EditMode tests pass via Unity Test Runner
+- [x] 1.1 Presentation asmdef exists at Assets/Scripts/Presentation/Grodowladcy.Presentation.asmdef, references UnityEngine.UI, and does not reference Grodowladcy.Runtime or set noEngineReferences
+- [x] 1.2 Main menu scene and controller contain the literals Nowa rozgrywka, Wznów, and Brak zapisu do wznowienia.
+- [x] 1.3 EditMode tests pass via Unity Test Runner
 
 #### Manual
 
-- [ ] 1.4 Play starts on the main menu and both button labels are visible
-- [ ] 1.5 Pressing Wznów shows Brak zapisu do wznowienia. and does not change the scene
+- [x] 1.4 Play starts on the main menu and both button labels are visible
+- [x] 1.5 Pressing Wznów shows Brak zapisu do wznowienia. and does not change the scene
 
 ### Phase 2: Open MapView
 
