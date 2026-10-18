@@ -258,5 +258,5 @@ No player save exists yet, so there is nothing to migrate. The board scene moves
 
 #### Automated
 
-- [x] 3.1 context/foundation/prd.md primary success criterion and FR-002 offer Nowa rozgrywka and Wznów, and the menu sentence no longer offers Nowa gra or Wczytaj autosave
-- [x] 3.2 context/foundation/roadmap.md names the S-07, S-01, and S-06 buttons as Nowa rozgrywka and Wznów, and those slice outcomes no longer say New game or Continue
+- [x] 3.1 context/foundation/prd.md primary success criterion and FR-002 offer Nowa rozgrywka and Wznów, and the menu sentence no longer offers Nowa gra or Wczytaj autosave — be7b8d2
+- [x] 3.2 context/foundation/roadmap.md names the S-07, S-01, and S-06 buttons as Nowa rozgrywka and Wznów, and those slice outcomes no longer say New game or Continue — be7b8d2
