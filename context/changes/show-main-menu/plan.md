@@ -232,27 +232,27 @@ No player save exists yet, so there is nothing to migrate. The board scene moves
 
 #### Automated
 
-- [x] 1.1 Presentation asmdef exists at Assets/Scripts/Presentation/Grodowladcy.Presentation.asmdef, references UnityEngine.UI, and does not reference Grodowladcy.Runtime or set noEngineReferences
-- [x] 1.2 Main menu scene and controller contain the literals Nowa rozgrywka, Wznów, and Brak zapisu do wznowienia.
-- [x] 1.3 EditMode tests pass via Unity Test Runner
+- [x] 1.1 Presentation asmdef exists at Assets/Scripts/Presentation/Grodowladcy.Presentation.asmdef, references UnityEngine.UI, and does not reference Grodowladcy.Runtime or set noEngineReferences — e7e3c13
+- [x] 1.2 Main menu scene and controller contain the literals Nowa rozgrywka, Wznów, and Brak zapisu do wznowienia. — e7e3c13
+- [x] 1.3 EditMode tests pass via Unity Test Runner — e7e3c13
 
 #### Manual
 
-- [x] 1.4 Play starts on the main menu and both button labels are visible
-- [x] 1.5 Pressing Wznów shows Brak zapisu do wznowienia. and does not change the scene
+- [x] 1.4 Play starts on the main menu and both button labels are visible — e7e3c13
+- [x] 1.5 Pressing Wznów shows Brak zapisu do wznowienia. and does not change the scene — e7e3c13
 
 ### Phase 2: Open MapView
 
 #### Automated
 
-- [ ] 2.1 Assets/Scenes/MapView.unity exists, and the MapView meta guid is 8c9cfa26abfee488c85f1582747f6a02
-- [ ] 2.2 EditorBuildSettings and the Android build profile list MainMenu at index 0 and MapView at index 1
-- [ ] 2.3 EditMode tests pass via Unity Test Runner
+- [x] 2.1 Assets/Scenes/MapView.unity exists, and the MapView meta guid is 8c9cfa26abfee488c85f1582747f6a02
+- [x] 2.2 EditorBuildSettings and the Android build profile list MainMenu at index 0 and MapView at index 1
+- [x] 2.3 EditMode tests pass via Unity Test Runner
 
 #### Manual
 
-- [ ] 2.4 Pressing Nowa rozgrywka loads MapView
-- [ ] 2.5 MapView still shows only the camera, the 2D light, and the field sprite, with no menu and no return control
+- [x] 2.4 Pressing Nowa rozgrywka loads MapView
+- [x] 2.5 MapView still shows only the camera, the 2D light, and the field sprite, with no menu and no return control
 
 ### Phase 3: Align menu labels
 
