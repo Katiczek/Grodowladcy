@@ -19,7 +19,7 @@ namespace Grodowladcy.Presentation
 
         public void Resume()
         {
-            messageText.text = "Brak zapisu do wznowienia.";
+            messageText.text = GameText.Get("menu.resume.no_save");
         }
     }
 }

@@ -2,6 +2,7 @@
     "name": "Grodowladcy.Presentation",
     "rootNamespace": "Grodowladcy.Presentation",
     "references": [
+        "Grodowladcy.Runtime",
         "UnityEngine.UI"
     ],
     "includePlatforms": [],
