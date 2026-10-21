@@ -3,7 +3,7 @@ project: "Grodowładcy"
 version: 1
 status: draft
 created: 2026-10-11
-updated: 2026-10-18
+updated: 2026-10-21
 prd_version: 1
 main_goal: learn
 top_blocker: capacity
@@ -42,7 +42,7 @@ Krótka, lokalna gra na telefony dla Magdy i stałej paczki przyjaciół: wspól
 | ID   | Change ID                     | Outcome (user can …)                                                                                                      | Prerequisites | PRD refs                         | Status   |
 | ---- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
 | S-07 | show-main-menu                | gracz może zobaczyć menu główne z przyciskami „Nowa rozgrywka” i „Wznów”                                                     | —             | US-01, FR-001, FR-002            | done |
-| S-01 | start-on-visible-map          | gracz może po „Nowa rozgrywka” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych          | S-07          | US-01, FR-001, FR-008            | proposed |
+| S-01 | start-on-visible-map          | gracz może po „Nowa rozgrywka” nadać lokalną nazwę i zobaczyć mapę heksów ze stolicą, monetami, sławą i pulą poddanych          | S-07          | US-01, FR-001, FR-008            | ready |
 | S-02 | plan-subject-action           | gracz może wybrać sąsiednie pole i zaplanować zajęcie, farmę albo dom, a potem zakończyć fazę poddanych                  | S-01          | US-01, FR-003, FR-004, FR-005    | proposed |
 | S-03 | post-hero-announcement        | gracz może przejrzeć trzech bohaterów i wystawić ogłoszenie z polem oraz nagrodą w monetach                              | S-02          | US-01, FR-005, FR-006, FR-007    | blocked  |
 | S-04 | resolve-first-turn            | gracz może zakończyć turę i zobaczyć, czy bohater przyjął zlecenie oraz czy misja się udała, razem ze skutkiem planów poddanych | S-03          | US-01, FR-005, FR-014            | blocked  |
@@ -96,10 +96,9 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 - **Prerequisites:** S-07
 - **Parallel with:** —
 - **Blockers:** —
-- **Unknowns:**
-  - Jak dokładnie ułożyć heksy poza minimum ze źródła (stolica, puste pola, neutralna wieś, potwór)? — Owner: user. Block: no.
-- **Risk:** To pierwsza nieznana warstwa: widoczna plansza. Bez niej nie ma czego dotykać, a reguły rozstrzygnięć już są i nie powinny wyprzedzać ekranu. Samo menu jest w S-07.
-- **Status:** proposed
+- **Unknowns:** —
+- **Risk:** To pierwsza nieznana warstwa: widoczna plansza. Bez niej nie ma czego dotykać, a reguły rozstrzygnięć już są i nie powinny wyprzedzać ekranu. Samo menu jest w S-07. Układ heksów jest już ustalony (Q-02).
+- **Status:** ready
 
 ### S-02: Plan akcji poddanych
 
@@ -168,7 +167,7 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 | Roadmap ID | Change ID                   | Suggested issue title                                              | Ready for `/10x-plan` | Notes                                      |
 | ---------- | --------------------------- | ------------------------------------------------------------------ | --------------------- | ------------------------------------------ |
 | S-07       | show-main-menu              | Main menu                                                          | yes                   | Uruchom `/10x-plan show-main-menu`         |
-| S-01       | start-on-visible-map        | Gracz zaczyna grę i widzi mapę oraz zasoby                         | no                    | Czeka na S-07                              |
+| S-01       | start-on-visible-map        | Gracz zaczyna grę i widzi mapę oraz zasoby                         | yes                   | Uruchom `/10x-plan start-on-visible-map`. Q-02 rozstrzygnięte. |
 | S-02       | plan-subject-action         | Gracz planuje akcję poddanych na sąsiednim polu                    | no                    | Czeka na S-01; potem obok S-06             |
 | S-03       | post-hero-announcement      | Gracz przegląda bohaterów i wystawia ogłoszenie                    | no                    | Blokuje brak liczb bohaterów               |
 | S-04       | resolve-first-turn          | Gracz rozstrzyga pierwszą turę                                     | no                    | Blokuje brak liczb bohaterów               |
@@ -178,6 +177,10 @@ Brak. Reguły przyjęcia zlecenia, wyniku misji i progu sławy już są w kodzie
 ## Open Roadmap Questions
 
 1. **Jakie publiczne statystyki, ukryty próg monet i siła mają trzej bohaterowie w puli każdej tury?** — Owner: user. Block: S-03, S-04.
+
+Rozstrzygnięte:
+
+1. **Q-02: Jak ułożyć heksy poza minimum (stolica, puste pola, neutralna wieś, potwór)?** — 2026-10-21. Mapa ma 19 heksów: stolica w środku, wokół niej cztery puste pola oraz wieś i potwór naprzeciwko siebie, a zewnętrzny pierścień to dwanaście pustych pól. Zapis współrzędnych: `context/foundation/prd.md` (Business Logic, Open Questions pkt 7). Nie blokowało S-01.
 
 ## Parked
 

@@ -3,7 +3,7 @@ project: "Grodowładcy"
 version: 1
 status: draft
 created: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-21
 prd_version: 1
 milestone_id: first-playable-turn
 ---
@@ -14,7 +14,7 @@ milestone_id: first-playable-turn
 
 Work sequencing lives in [context/foundation/roadmap.md](context/foundation/roadmap.md). The issues are on GitHub: `git@github.com:Katiczek/Grodowladcy.git`, milestone [M-1: First playable turn](https://github.com/Katiczek/Grodowladcy/milestone/1). There is no Linear, Jira, or GitHub Project. The roadmap file stays the source of truth for order and status; these issues are the backlog.
 
-Nine issues are open: S-07 through S-06, plus Q-01 and Q-02. Parked non-goals stay in the roadmap only.
+Q-02 (#8) is closed as of 2026-10-21. Q-01 stays open. Parked non-goals stay in the roadmap only.
 
 ## Fields on every issue
 
@@ -87,7 +87,7 @@ flowchart LR
 
 - Labels: `roadmap:question`
 - From S-01 Unknowns. Owner: you. Does not block S-01.
-- US-01 already requires a capital, empty fields, one neutral village, and one monster.
+- Answered 2026-10-21: 19 hexes. Capital at axial (0, 0). Ring 1: empty (1, 0), (1, −1), (−1, 0), (−1, 1); monster (0, −1); neutral village (0, 1). Ring 2 is twelve empty hexes. Recorded in `context/foundation/prd.md`.
 
 **S-01: Crown the kingdom, then admire a map with no army** ([#9](https://github.com/Katiczek/Grodowladcy/issues/9), `start-on-visible-map`, roadmap status proposed)
 
@@ -95,7 +95,7 @@ flowchart LR
 - Outcome: after New game, a local name and the hex map with the capital, coins, fame, and the subject pool.
 - Achieve: local profile, predefined map, always-visible resources. Start values 10 coins / 0 fame / 3 subjects (FR-001, FR-008, US-01). The menu itself is S-07. Today the scene is an empty board (`Assets/Scenes/SampleScene.unity`).
 - PRD: US-01, FR-001, FR-008.
-- Prerequisites: S-07. Parallel: none. Question: Q-02, and it does not block.
+- Prerequisites: S-07. Parallel: none. Question: Q-02, answered 2026-10-21; it does not block.
 - Risk: this is the first visible board. Resolution rules already exist and must not be rebuilt ahead of the screen.
 - Done when: New game leads to a named game that shows the minimum map and the three starting resources.
 

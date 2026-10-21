@@ -3,7 +3,7 @@ project: "Grodowładcy"
 version: 1
 status: draft
 created: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-21
 prd_version: 1
 milestone_id: first-playable-turn
 source: context/foundation/tasks-github.md
@@ -112,15 +112,15 @@ Checked after create: S-01 is blocked by S-07 and related to Q-02. S-06 is block
 
 **Q-02: The map is shy about every hex past the starter pack** ([GRO-7](https://linear.app/grodowladcy/issue/GRO-7/q-02-the-map-is-shy-about-every-hex-past-the-starter-pack), GitHub [#8](https://github.com/Katiczek/Grodowladcy/issues/8))
 
-- State: Todo. Assignee: Magda. Labels: `roadmap:question` only.
+- State: Done (answered 2026-10-21). Assignee: Magda. Labels: `roadmap:question` only.
 - From S-01 unknowns. Related to S-01. Does not block S-01.
-- US-01 already requires a capital, empty fields, one neutral village, and one monster.
+- Answer: 19 hexes. Capital at axial (0, 0). Ring 1: empty (1, 0), (1, −1), (−1, 0), (−1, 1); monster (0, −1); neutral village (0, 1). Ring 2 is twelve empty hexes. Recorded in `context/foundation/prd.md`.
 - Change ID: none.
 
 **S-01: Crown the kingdom, then admire a map with no army** ([GRO-8](https://linear.app/grodowladcy/issue/GRO-8/s-01-crown-the-kingdom-then-admire-a-map-with-no-army), GitHub [#9](https://github.com/Katiczek/Grodowladcy/issues/9), `start-on-visible-map`, roadmap status proposed)
 
 - State: Todo. Labels: `roadmap:slice`, `stream:turn-loop`, `status:ready-to-work`.
-- Blocked by S-07. Related to Q-02, which does not block.
+- Blocked by S-07. Related to Q-02, answered 2026-10-21; it does not block.
 - Outcome: after New game, a local name and the hex map with the capital, coins, fame, and the subject pool.
 - Achieve: local profile, predefined map, always-visible resources. Start values 10 coins / 0 fame / 3 subjects (FR-001, FR-008, US-01). The menu itself is S-07. Today the scene is an empty board (`Assets/Scenes/SampleScene.unity`).
 - Done when: New game leads to a named game that shows the minimum map and the three starting resources.

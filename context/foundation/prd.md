@@ -59,7 +59,7 @@ W kolejności preferencji (po Primary):
 
 ### US-01: First solo turn through resolution and win check
 
-- **Given** the player starts a new game on a predefined hex map, with a capital, **10 coins, 0 fame, and 3 loyal subjects**; the map has empty fields, a neutral village, and a monster
+- **Given** the player starts a new game on a predefined hex map, with a capital, **10 coins, 0 fame, and 3 loyal subjects**; the map is 19 hexes in two rings: the capital in the center, four empty fields plus one neutral village and one monster around it (village and monster on opposite sides of the capital), and twelve empty fields in the outer ring
 - **When** the first turn begins in phase 1 (loyal subjects)
 - **Then** the player sees the map and can select fields adjacent to their kingdom to plan one available action: claim empty hex, build farm, or build house
 
@@ -156,6 +156,8 @@ Moment w turze: decyzja o przyjęciu zaraz po „Zakończ fazę” w fazie najmu
 
 Balans startowy i ekonomia (MVP): start 10 monet / 0 sławy / 3 poddanych; farma koszt 3 (+2 monety/turę); dom koszt 4 (+1 poddany); 3 bohaterów w puli, odświeżanie co turę; wygrana przy sławie ≥ 20.
 
+Ustalona mapa (2026-10-21, Q-02): 19 heksów, współrzędne osiowe (q, r). Stolica (0, 0). Pierścień przy stolicy: puste (1, 0), (1, −1), (−1, 0), (−1, 1); potwór (0, −1); neutralna wieś (0, 1) — wieś i potwór leżą po przeciwnych stronach stolicy. Zewnętrzny pierścień, same puste pola: (2, 0), (2, −1), (2, −2), (1, −2), (0, −2), (−1, −1), (−2, 0), (−2, 1), (−2, 2), (−1, 2), (0, 2), (1, 1). Innych heksów nie ma. Obrót tej siatki na ekranie zostaje przy rysowaniu mapy; wieś i potwór zostają naprzeciwko siebie.
+
 ## Access Control
 
 Local profile na urządzeniu — bez kont w chmurze / bez klasycznego logowania. Gracz ustawia lokalny profil (np. nick).
@@ -181,3 +183,4 @@ None open as of 2026-09-23. Resolved (all Recommended / 5→A1):
 4. Enemy strength: monster **5**, village **3**, own-field defense **2**
 5. Mission success rewards: monster **+3 fame**, village **+5 coins** (once), defense **+1 fame**
 6. Hero pool: **3 per turn**, refreshed each turn
+7. Predefined map (Q-02, 2026-10-21): **19 hexes**. Capital at axial (0, 0). Ring 1: empty (1, 0), (1, −1), (−1, 0), (−1, 1); monster (0, −1); neutral village (0, 1). Ring 2, all empty: (2, 0), (2, −1), (2, −2), (1, −2), (0, −2), (−1, −1), (−2, 0), (−2, 1), (−2, 2), (−1, 2), (0, 2), (1, 1). No further hexes.
